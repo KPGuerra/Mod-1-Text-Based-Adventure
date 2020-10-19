@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2020_10_19_174421) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
-    t.string "class"
+    t.string "role"
     t.string "description"
     t.integer "hp"
     t.integer "level"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_10_19_174421) do
 
   create_table "enemies", force: :cascade do |t|
     t.string "name"
-    t.string "class"
+    t.string "role"
     t.string "description"
     t.integer "hp"
     t.integer "level"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_10_19_174421) do
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.string "type"
+    t.string "item_type"
     t.integer "character_id"
   end
 
