@@ -7,7 +7,7 @@ class CLI
     def self.title
         system('clear')
         sleep(1)
-        puts @@pastel.red(@@font.write("ROGUEE!", letter_spacing: 4))
+        puts @@pastel.red.bold(@@font.write("ROGUEE!".center(25), letter_spacing: 4))
     end
 
     def self.main_menu
@@ -96,13 +96,13 @@ class CLI
             puts "HP:          150"
             puts "Attack:       10"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["y", "n"])
-            if question == "n"
-                system('clear')
+            question = @@prompt.select("Are you sure?", ["Yes", "No"])
+            if question == "No"
+                sYesstem('clear')
                 self.start_game
-            elsif question == "y"
+            elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.create(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10)
+                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10)
             end
         when 2
             sleep(1)
@@ -112,13 +112,13 @@ class CLI
             puts "HP:          100"
             puts "Attack:        7"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["y", "n"])
-            if question == "n"
+            question = @@prompt.select("Are you sure?", ["Yes", "No"])
+            if question == "No"
                 system('clear')
                 self.start_game
-            elsif question == "y"
+            elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7)
+                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7)
             end
         when 3
             sleep(1)
@@ -128,13 +128,13 @@ class CLI
             puts "HP:          110"
             puts "Attack:        5"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["y", "n"])
-            if question == "n"
+            question = @@prompt.select("Are you sure?", ["Yes", "No"])
+            if question == "No"
                 system('clear')
                 self.start_game
-            elsif question == "y"
+            elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5)
+                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5)
             end
         when 4
             sleep(1)
@@ -144,13 +144,13 @@ class CLI
             puts "HP:           90"
             puts "Attack:        9"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["y", "n"])
-            if question == "n"
+            question = @@prompt.select("Are you sure?", ["Yes", "No"])
+            if question == "No"
                 system('clear')
                 self.start_game
-            elsif question == "y"
+            elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9)
+                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9)
             end
         else 
             system('clear')
@@ -172,9 +172,21 @@ class CLI
     #Starting The Game with an introduction
     def self.introduction
         #puts description of the World and Enviornment
-        puts "You are #{@character.name}. #{@character.description}."
-        puts "\n "
-        
+        puts "\n You are #{@character.name}. #{@character.description}."
+        puts "\n You wake up in an empty dungeon cell. Its dark and cold, you can barely see in front of you."
+        puts "\n Suddenly the gate to your cell falls open allowing you to escape. You don't know where you are or how you got here."
+        puts "\n All you know is that you must find a way out of here. \n\n"
+        @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
+        system('clear')
+        puts "\n You cautiously step outside of cell. You find yourself in a long hallway with only one exit."
+        puts "\n As you walk to end of the hallway you pass by other empty cells. You seem to be alone."
+        puts "\n At the end of the hallway, you find a lantern on the floor"
+        puts "\n You pick it up since this is will be your only light source."
+        puts "\n After equiping and turning on the lantern. You realize you are standing in front of a large door."
+        puts "\n You push open the heavy door and begin your journey to find your way home \n\n"
+        @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
+        system('clear')
+
     end 
 
     # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
