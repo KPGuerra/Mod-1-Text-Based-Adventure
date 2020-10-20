@@ -7,7 +7,7 @@ Battle.destroy_all
 nina = User.create(user_name: "ninas", password: "dog")
 
 characters = [
-    azula = Character.create(name: "Azula", role: "Mage", description: "Lighting girl", hp: 100, level: 1, experience_points: 0, user_id: nina.id ),
+    Character.create(name: "Grimsborth", role: "Huntress", description: "", hp: 100, level: 1, experience_points: 0, user_id: nina.id ),
     Character.create(name: "Azula", role: "Rogue", description: "Lighting girl", hp: 100, level: 1, experience_points: 0, user_id: nina.id),
     Character.create(name: "Azula", role: "Warrior", description: "Lighting girl", hp: 100, level: 1, experience_points: 0, user_id: nina.id),
     Character.create(name: "Azula", role: "Healer", description: "Lighting girl", hp: 100, level: 1, experience_points: 0, user_id: nina.id)
