@@ -4,7 +4,7 @@ Item.destroy_all
 Enemy.destroy_all
 Battle.destroy_all
 
-nina = User.create(name: "Nina", user_name: "ninas", password: "dog")
+nina = User.create(user_name: "ninas", password: "dog")
 
 characters = [
     azula = Character.create(name: "Azula", role: "Mage", description: "Lighting girl", hp: 100, level: 1, experience_points: 0, user_id: nina.id ),
@@ -26,3 +26,4 @@ items = [
     broadsword = Item.create(name: "Broadsword", item_type: "Weapon", description: "+5 Strength", character_id: azula.id)
 
 ]
+
