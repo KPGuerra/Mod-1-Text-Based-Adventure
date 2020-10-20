@@ -79,17 +79,9 @@ class CLI
             menu.choice "Exit", 5
         end
         
-        create_table "characters", force: :cascade do |t|
-            t.string "name"
-            t.string "role"
-            t.string "description"
-            t.integer "hp"
-            t.integer "level"
-            t.integer "experience_points"
-            t.integer "user_id"
-            
         case char
         when 1
+            sleep(1)
             puts "Display stats"
             question = @@prompt.select("Are you sure?", ["y", "n"])
             if question == "n"
@@ -126,7 +118,8 @@ class CLI
                 character = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id)
             end
             system('clear')
-        else
+        else 
+            system('clear')
             exit
         end
     end
@@ -141,4 +134,6 @@ class CLI
             exit
         end
     end
+
+    
 end 
