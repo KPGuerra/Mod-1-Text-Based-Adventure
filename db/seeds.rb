@@ -2,7 +2,7 @@ User.destroy_all
 Character.destroy_all
 Item.destroy_all
 Enemy.destroy_all
-Battle.destroy_all
+Encounter.destroy_all
 
 nina = User.create(user_name: "ninas", password: "dog")
 
