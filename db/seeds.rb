@@ -26,5 +26,3 @@ items = [
     broadsword = Item.create(name: "Broadsword", item_type: "Weapon", description: "+5 Strength", character_id: azula.id)
 
 ]
-
-Battle.create(enemy_id: goblin.id, character_id: azula.id, result:"Win")
