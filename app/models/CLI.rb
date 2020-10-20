@@ -76,20 +76,55 @@ class CLI
             menu.choice "Kinklesburg", 2
             menu.choice "Croseus", 3
             menu.choice "Luminol", 4
+            menu.choice "Exit", 5
         end
-
+        
+        create_table "characters", force: :cascade do |t|
+            t.string "name"
+            t.string "role"
+            t.string "description"
+            t.integer "hp"
+            t.integer "level"
+            t.integer "experience_points"
+            t.integer "user_id"
+            
         case char
         when 1
             puts "Display stats"
+            question = @@prompt.select("Are you sure?", ["y", "n"])
+            if question == "n"
+                self.start_game
+            elsif question == "y"
+                #procede to the actual game
+                character = Character.create(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id)
+            end
             system('clear')
         when 2
             puts "Display stats"
+            if question == "n"
+                self.start_game
+            elsif question == "y"
+                #procede to the actual game
+                character = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id)
+            end
             system('clear')
         when 3
             puts "Display stats"
+            if question == "n"
+                self.start_game
+            elsif question == "y"
+                #procede to the actual game
+                character = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id)
+            end
             system('clear')
         when 4
             puts "Display stats"
+            if question == "n"
+                self.start_game
+            elsif question == "y"
+                #procede to the actual game
+                character = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id)
+            end
             system('clear')
         else
             exit
