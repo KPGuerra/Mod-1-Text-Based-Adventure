@@ -19,6 +19,11 @@ This is a rogue like text based adventure game
 - Getting the game to work (atleast most of it)
 - Make a stats method, displaying character stats
 - Make a leaderboards table
+- Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
+- Then we add in combat (randomize attks(.sample method))
+- Method for stats & inventory
+- Results win/loss/getting an item
+- Eventually one shotting the BOSS :D
 ---
 ## Stretch Goals
 - Add music for an immersive gameplay
