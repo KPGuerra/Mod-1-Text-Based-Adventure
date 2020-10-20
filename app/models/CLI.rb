@@ -186,7 +186,6 @@ class CLI
         puts "\n You push open the heavy door and begin your journey to find your way home \n\n"
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
-
     end 
 
     # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
