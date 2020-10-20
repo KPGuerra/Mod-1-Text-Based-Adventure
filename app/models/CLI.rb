@@ -1,20 +1,28 @@
+require 'pry'
 class CLI 
     @@prompt = TTY::Prompt.new
+    @@pastel = Pastel.new
+    @@font = TTY::Font.new(:doom)
+
+    def self.title
+        system('clear')
+        sleep(1)
+        puts @@pastel.red(@@font.write("ROGUEE!", letter_spacing: 4))
+    end
 
     def self.main_menu
-        system('clear')
-        user_choice = @@prompt.select("This is the menu",["Log In", "Create Account", "Leaderboards", "Exit"])
+        sleep(1)
+        user_choice = @@prompt.select("", ["Log In", "Create Account", "Leaderboards", "Exit"])
         if user_choice == "Log In"
-            system("clear")
             self.log_in
         elsif
             user_choice == "Create Account"
-            system("clear")
             self.create_account
         elsif
             user_choice == "Leaderboards"
         elsif
             user_choice == "Exit"
+            system('clear')
             exit
         end
     end
@@ -58,7 +66,7 @@ class CLI
             self.start_game
         #How-to-play - #back
         elsif choice == "How-to-play"
-            self.instruction
+            self.how_to_play
         #Exit
         elsif
             exit
@@ -82,51 +90,77 @@ class CLI
         case char
         when 1
             sleep(1)
-            puts "Display stats"
+            puts "Name: Grimsborth"
+            puts "Role:    Warrior"
+            puts "----------------"
+            puts "HP:          150"
+            puts "Attack:       10"
+            puts "----------------"
             question = @@prompt.select("Are you sure?", ["y", "n"])
             if question == "n"
+                system('clear')
                 self.start_game
             elsif question == "y"
                 #procede to the actual game
-                character = Character.create(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id)
+                @character = Character.create(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10)
             end
-            system('clear')
         when 2
-            puts "Display stats"
+            sleep(1)
+            puts "Name: Kinklesburg"
+            puts "Role:   Mercenary"
+            puts "----------------"
+            puts "HP:          100"
+            puts "Attack:        7"
+            puts "----------------"
+            question = @@prompt.select("Are you sure?", ["y", "n"])
             if question == "n"
+                system('clear')
                 self.start_game
             elsif question == "y"
                 #procede to the actual game
-                character = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id)
+                @character = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7)
             end
-            system('clear')
         when 3
-            puts "Display stats"
+            sleep(1)
+            puts "Name:     Croseus"
+            puts "Role:    Huntress"
+            puts "----------------"
+            puts "HP:          110"
+            puts "Attack:        5"
+            puts "----------------"
+            question = @@prompt.select("Are you sure?", ["y", "n"])
             if question == "n"
+                system('clear')
                 self.start_game
             elsif question == "y"
                 #procede to the actual game
-                character = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id)
+                @character = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5)
             end
-            system('clear')
         when 4
-            puts "Display stats"
+            sleep(1)
+            puts "Name:    Luminol"
+            puts "Role:       Mage"
+            puts "----------------"
+            puts "HP:           90"
+            puts "Attack:        9"
+            puts "----------------"
+            question = @@prompt.select("Are you sure?", ["y", "n"])
             if question == "n"
+                system('clear')
                 self.start_game
             elsif question == "y"
                 #procede to the actual game
-                character = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id)
+                @character = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9)
             end
-            system('clear')
         else 
             system('clear')
             exit
         end
     end
 
-    def self.instruction
+    def self.how_to_play
         # Go back
-        # Finish up instructions
+        # Finish up how-to-play
         choice = @@prompt.select("Do lateer!", ["Back", "Exit"])
         if choice == "Back"
             self.user_menu
@@ -135,5 +169,23 @@ class CLI
         end
     end
 
-    
+    #Starting The Game with an introduction
+    def self.introduction
+        #puts description of the World and Enviornment
+        puts "You are #{@character.name}. #{@character.description}."
+        puts "\n "
+        
+    end 
+
+    # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
+
+    # Then we add in combat (randomize attks(.sample method))
+
+    # Method for stats & inventory
+
+    # Results win/loss/getting an item
+
+    # Eventually one shotting the BOSS :D
+
 end 
+# binding.pry
