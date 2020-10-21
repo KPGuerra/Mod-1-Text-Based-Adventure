@@ -17,7 +17,6 @@ This is a rogue like text based adventure game
 ---
 ## Future things to work on:
 - Getting the game to work (atleast most of it)
-- Make a stats method, displaying character stats
 - Make a leaderboards table
 - Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
 - Then we add in combat (randomize attks(.sample method))
