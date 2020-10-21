@@ -9,6 +9,13 @@ class Encounter < ActiveRecord::Base
     #     t.string "result"
     # end
 
+    # create_table "items", force: :cascade do |t|
+    #     t.string "name"
+    #     t.string "description"
+    #     t.string "item_type"
+    #     t.integer "encounter_id"
+    # end
+
     # Item Encounters
     def ecounter_item_weapon
         Encounter.create(enemy: false, item: true)
@@ -34,7 +41,11 @@ class Encounter < ActiveRecord::Base
 
     # Create enemy
     def new_enemy
-        Enemy.create(name:, role:, description:, hp:, level:, attack_power:, encounter_id:)
+        Enemy.create(name: "", role: "", description: "", hp: "", level: "", attack_power: "", encounter_id: "")
+    end
+
+    def new_boss
+        
     end
 
     def winner_or_not_winner(character, enemy)
