@@ -60,7 +60,7 @@ class CLI
     def self.user_menu
         system("clear")
         # puts "Welcome #{user_name}"
-        choice = @@prompt.select("Welcome #{@current_user.user_name}", ["Start", "How-to-play", "Exit"])
+        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "How-to-play", "Exit"])
         #Start
         if choice == "Start"
             self.start_game
@@ -161,7 +161,9 @@ class CLI
     def self.how_to_play
         # Go back
         # Finish up how-to-play
-        choice = @@prompt.select("Do lateer!", ["Back", "Exit"])
+        puts "Click on Start button, select your character & view their respective stats. Choose another character if not pleased. Then confirm,
+        hop into the game and try to survive defeated enemies and collecting useful items."
+        choice = @@prompt.select("", ["Back", "Exit"])
         if choice == "Back"
             self.user_menu
         else
@@ -171,6 +173,8 @@ class CLI
 
     #Starting The Game with an introduction
     def self.introduction
+        system('clear')
+        sleep(1)
         #puts description of the World and Enviornment
         puts "\n You are #{@character.name}. #{@character.description}."
         puts "\n You wake up in an empty dungeon cell. Its dark and cold, you can barely see in front of you."
@@ -188,11 +192,11 @@ class CLI
         system('clear')
     end 
 
+    #In game menu -- options: (View Inventory, View Stats, Quit)
+    #Write first encounter
+
     # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
 
-    # Then we add in combat (randomize attks(.sample method))
-
-    # Method for stats & inventory
 
     # Results win/loss/getting an item
 
