@@ -86,8 +86,9 @@ class CLI
             puts "Your username has been succesfully updated"
             self.user_menu
         elsif choice == "Update password"
-            new_password = @@prompt.ask("Input new user name:")
-            @current_user.password(password: new_password)
+            current_user = User.find_by(user_name: user_name, password: password)
+            new_password = @@prompt.ask("Input new password:")
+            current_user.update(password: new_password)
             puts "Your password has been successfully updated"
             self.user_menu
         elsif choice == "Delete account" # WORKSS
@@ -245,7 +246,7 @@ class CLI
         puts "\n You pick it up since this is will be your only light source.\n\n"
 
         #Character picks up the Lantern, this is the first item added to inventory
-        encounter_intro = Encounter.ecounter_item_random
+        encounter_intro = @character.ecounter_item_random
         @character.add_item_to_inventory("Lantern", "Misc", "A rusty Lantern that has plenty of oil.", encounter_intro)
         
 

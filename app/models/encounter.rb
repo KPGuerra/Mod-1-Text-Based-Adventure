@@ -10,11 +10,11 @@ class Encounter < ActiveRecord::Base
         # Needs workkkk
         Encounter.create(enemy: false, item: true)
     end
-    def self.ecounter_item_random
-        # Incomplete
-        new_encounter = Encounter.create(enemy: false, item: true) # Do we even need this here
-        # @@items.sample(1)
-    end
+    # def self.ecounter_item_random
+    #     # Incomplete
+    #     new_encounter = Encounter.create(enemy: false, item: true) # Do we even need this here
+    #     # @@items.sample(1)
+    # end
 
     # Enemy Encounter -------------------------------------------------
     def self.encounter_enemy

@@ -26,7 +26,7 @@ class Character < ActiveRecord::Base
             puts "Your inventory is empty."
         else 
             inventory.each do |item|
-                puts "#{item.name}: #{item.descripton}"
+                puts "#{item.name}: #{item.description}"
             end
         end
     end 
@@ -74,4 +74,10 @@ class Character < ActiveRecord::Base
         end 
     end 
     #--------------------------------------------------------
+
+    def ecounter_item_random
+        # Incomplete
+        new_encounter = Encounter.create(enemy: false, item: true, character_id: self.id) # Do we even need this here
+        # @@items.sample(1)
+    end
 end 
