@@ -37,13 +37,11 @@ class Enemy < ActiveRecord::Base
     def enemy_moves
         moves = @@enemy_attacks.sample(4)
         moves
-        # @@prompt.select("Choose your attack:", [moves[0], moves[1], moves[2], moves[3]])
     end
 
     def boss_moves
-        moves = @@boss_attacks
+        moves = @@boss_attacks.sample(4)
         moves
-        # @@prompt.select('Choose your attack:', [moves[0], moves[1], moves[2], moves[3]])
     end
 
 
