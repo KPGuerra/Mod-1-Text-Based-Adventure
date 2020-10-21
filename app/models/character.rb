@@ -29,21 +29,45 @@ class Character < ActiveRecord::Base
         end
     end 
 
-    def add_item_to_inventory(name, descripton, item_type)
-        Item.create(name: name, descripton: descripton, item_type: item_type, character_id: self.id)
+    #Successfully adds an item to the character's inventory 
+    def add_item_to_inventory(name, description, item_type, encounter)
+        item = Item.create(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
+        puts "\n You have picked up #{item.name} and it has been added to your inventory."
     end 
 
+    #Method to equip or use an item
     def use_item(item_name)
         item = self.items.find_by(name: item_name)
         if item.item_type == "Healing Potion"
-            self.hp += 10
-            #removes Item from inventory 
-            Item.destroy(item)
+            if self.hp += 10 < self.base_hp
+                puts "You drank the entire bottle. You feel energized! (+10 HP)"
+                puts "You HP is now #{self.hp}"
+                #removes Item from inventory 
+                Item.destroy(item)
+            else
+                #if HP goes ove the base_health, it automatically caps at base_hp aka your max hp
+                self.hp = self.base_hp
+                puts "You drank the entire bottle. You are at full health!"
+                puts "Your HP is now #{self.base_hp}"
+                Item.destroy(item)
+            end 
         elsif item.item_type == "Weapon"
             #weapons will boost the characters attack points by a random number?
-            self.attack_power += [2,3,5].sample
+            if self.current_weapon == nil 
+                random_attack_boost = [2,3,5].sample
+                self.attack_power += random_attk_boost
+                puts "You've equipped #{item.name}. (+#{random_attk_boost})"
+            else 
+                equipped_weapon = self.items.find_by(current_weapon)
+                Item.destroy(equppied_weapon)
+                self.attack_power = self.base_attk
+                random_attack_boost = [5,6,10].sample
+                self.attack_power += random_attack_boost
+                puts "You have replaced your weapon with #{item.name}. (+#{random_attk_boost})"
+            end 
+        else 
+            puts "You can't use/equip this!"
         end 
     end 
-#--------------------------------------------------------
-
+    #--------------------------------------------------------
 end 

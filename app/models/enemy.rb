@@ -1,32 +1,8 @@
 class Enemy < ActiveRecord::Base
     belongs_to :encounter
     @@prompt = TTY::Prompt.new
-    # create_table "encounters", force: :cascade do |t|
-    #     t.boolean "enemy"
-    #     t.boolean "item"
-    #     t.string "result"
-    # end
 
-    # create_table "characters", force: :cascade do |t|
-    #     t.string "name"
-    #     t.string "role"
-    #     t.string "description"
-    #     t.integer "hp"
-    #     t.integer "level"
-    #     t.integer "experience_points"
-    #     t.integer "user_id"
-    #     t.integer "attack_power"
-    # end
-
-    # create_table "enemies", force: :cascade do |t|
-    #     t.string "name"
-    #     t.string "role"
-    #     t.string "description"
-    #     t.integer "hp"
-    #     t.integer "level"
-    #     t.integer "attack_power"
-    #     t.integer "encounter_id"
-    # end
+    # ENEMY MOVES ---------------------------------------------
 
     # Give enemy array of moves. Randomize through them to get attack choices. Maybe the same for character ? Or maybe scripted moves
     @@enemy_attacks = ['Burst', 'Ignite', 'Grip', 'Punch', 'Backstab', 'Scratch']
@@ -44,8 +20,6 @@ class Enemy < ActiveRecord::Base
         moves
     end
 
-
-    # Then we add in combat (randomize attks(.sample method))
     # Will be moved to respective classes (Character, Enemy)
     #------------------------------------------#
     def self.attack(character) #place holder method name

@@ -20,6 +20,7 @@ class CLI
             self.create_account
         elsif
             user_choice == "Leaderboards"
+            self.leaderboards
         elsif
             user_choice == "Exit"
             system('clear')
@@ -68,7 +69,7 @@ class CLI
         elsif choice == "How-to-play"
             self.how_to_play
         #Exit
-        elsif
+        else
             exit
         end
     end
@@ -90,6 +91,7 @@ class CLI
         case char
         when 1
             sleep(1)
+            puts "----------------"
             puts "Name: Grimsborth"
             puts "Role:    Warrior"
             puts "----------------"
@@ -102,10 +104,11 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10)
+                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10 )
             end
         when 2
             sleep(1)
+            puts "----------------"
             puts "Name: Kinklesburg"
             puts "Role:   Mercenary"
             puts "----------------"
@@ -118,10 +121,11 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7)
+                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7)
             end
         when 3
             sleep(1)
+            puts "----------------"
             puts "Name:     Croseus"
             puts "Role:    Huntress"
             puts "----------------"
@@ -134,10 +138,11 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5)
+                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5)
             end
         when 4
             sleep(1)
+            puts "----------------"
             puts "Name:    Luminol"
             puts "Role:       Mage"
             puts "----------------"
@@ -150,7 +155,7 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9)
+                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9)
             end
         else 
             system('clear')
@@ -171,7 +176,7 @@ class CLI
         end
     end
 
-    #Starting The Game with an introduction
+    #Story
     def self.introduction
         system('clear')
         sleep(1)
@@ -186,14 +191,26 @@ class CLI
         puts "\n As you walk to end of the hallway you pass by other empty cells. You seem to be alone."
         puts "\n At the end of the hallway, you find a lantern on the floor"
         puts "\n You pick it up since this is will be your only light source."
-        puts "\n After equiping and turning on the lantern. You realize you are standing in front of a large door."
+
+        #Character picks up the Lantern, this is the first item added to inventory
+        encounter_intro = Encounter.ecounter_item_random
+        @character.add_item_to_inventory("Lantern", "Misc", "A rusty Lantern that has plenty of oil.", encounter_intro)
+        
+        puts "\n\n After equiping and turning on the lantern. You realize you are standing in front of a large door."
         puts "\n You push open the heavy door and begin your journey to find your way home \n\n"
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
     end 
 
+    #Story
+
+    # def self.story_out_cell
+        #put "After opening the door"
+    # end 
+
+    
     #In game menu -- options: (View Inventory, View Stats, Quit)
-    #Write first encounter
+
 
     # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
 
