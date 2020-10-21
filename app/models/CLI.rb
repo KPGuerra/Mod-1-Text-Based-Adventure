@@ -61,16 +61,47 @@ class CLI
     def self.user_menu
         system("clear")
         # puts "Welcome #{user_name}"
-        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "How-to-play", "Exit"])
+        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "How-to-play", "Update Account", "Exit"])
         #Start
         if choice == "Start"
             self.start_game
         #How-to-play - #back
         elsif choice == "How-to-play"
             self.how_to_play
+        # Update account
+        elsif choice == "Update Account"
+            self.account_update
         #Exit
         else
             exit
+        end
+    end
+
+    # Able to change user_name & pw/ delete account
+    def self.account_update
+        choice = @@prompt.select("", ["Update account name", "Update password", "Delete account", "Back"])
+        if choice == "Update account name"
+            new_name = @@prompt.ask("Input new user name:")
+            @current_user.user_name.update(user_name: new_name)
+            puts "Your username has been succesfully updated"
+            self.user_menu
+        elsif choice == "Update password"
+            new_password = @@prompt.ask("Input new user name:")
+            @current_user.password(password: new_password)
+            puts "Your password has been successfully updated"
+            self.user_menu
+        elsif choice == "Delete account" # WORKSS
+            are_you_sure = @@prompt.select("Are you sure?", ["Yes", "No"])
+            if are_you_sure == "Yes"
+                @current_user.destroy
+                sleep(1.5)
+                puts "Your account has been successfully destroyed"
+                self.main_menu
+            elsif are_you_sure == "No"
+                self.account_update
+            end
+        elsif choice == "Back"
+            self.user_menu
         end
     end
 
@@ -176,8 +207,29 @@ class CLI
         end
     end
 
+    def self.in_game_menu
+      choice = @@prompt.select("Menu") do |menu|
+          menu.choice "View Inventory", 1
+          menu.choice "View Character Stats", 2
+          menu.choice "Return to Game", 3
+      end
+
+      case choice
+      when 1 
+        @character.display_inventory
+        @@prompt.keypress("Return to Menu", keys: [:space, :return])
+        self.in_game_menu
+      when 2
+        @character.display_character_stats
+        @@prompt.keypress("Return to Menu", keys: [:space, :return])
+        self.in_game_menu
+      when 3
+         exit
+      end
+    end 
+
     #Story
-    def self.introduction
+    def self.story_introduction
         system('clear')
         sleep(1)
         #puts description of the World and Enviornment
@@ -190,12 +242,13 @@ class CLI
         puts "\n You cautiously step outside of cell. You find yourself in a long hallway with only one exit."
         puts "\n As you walk to end of the hallway you pass by other empty cells. You seem to be alone."
         puts "\n At the end of the hallway, you find a lantern on the floor"
-        puts "\n You pick it up since this is will be your only light source."
+        puts "\n You pick it up since this is will be your only light source.\n\n"
 
         #Character picks up the Lantern, this is the first item added to inventory
         encounter_intro = Encounter.ecounter_item_random
         @character.add_item_to_inventory("Lantern", "Misc", "A rusty Lantern that has plenty of oil.", encounter_intro)
         
+
         puts "\n\n After equiping and turning on the lantern. You realize you are standing in front of a large door."
         puts "\n You push open the heavy door and begin your journey to find your way home \n\n"
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
@@ -204,9 +257,32 @@ class CLI
 
     #Story
 
-    # def self.story_out_cell
-        #put "After opening the door"
-    # end 
+    def self.story_out_cell
+        system('clear')
+        sleep(1)
+        puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end." 
+        puts "\nAs you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at
+        the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you
+        is dark red and rusted. You can vaguely hear people whispering on the otherside.\n\n"
+        
+        choice = @@prompt.select("What would you like to do?") do |menu|
+            menu.choice "Continue down the hallway", 1
+            menu.choice "Open the Red Door", 2 
+            menu.choice "Menu", 3 
+        end 
+
+        case choice
+        when 1
+            puts "placehoalder text"
+        when 2
+            puts "moore blah text"
+        when 3
+            #define in gmae menu method
+            self.in_game_menu
+            #comes back to this prompt agaon after visting the menu where you can view your inventory and stats
+            self.story_out_cell
+        end
+    end 
 
     
     #In game menu -- options: (View Inventory, View Stats, Quit)

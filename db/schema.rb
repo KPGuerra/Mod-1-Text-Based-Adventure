@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_21_184126) do
+ActiveRecord::Schema.define(version: 2020_10_21_212946) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2020_10_21_184126) do
     t.boolean "enemy"
     t.boolean "item"
     t.string "result"
+    t.integer "character_id"
   end
 
   create_table "enemies", force: :cascade do |t|

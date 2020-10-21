@@ -6,7 +6,8 @@ class Character < ActiveRecord::Base
 
 #Display Stats----------------------------------------------
 #Center these later
-    def self.display_character_stats
+    def display_character_stats
+        system('clear')
         puts "------------------"
         puts "Name: #{self.name}"
         puts "Role: #{self.role}"
@@ -19,6 +20,7 @@ class Character < ActiveRecord::Base
     
 #Inventory Methods---------------------------------------
     def display_inventory
+        system('clear')
         inventory = self.items
         if inventory.count == 0
             puts "Your inventory is empty."
@@ -32,7 +34,9 @@ class Character < ActiveRecord::Base
     #Successfully adds an item to the character's inventory 
     def add_item_to_inventory(name, description, item_type, encounter)
         item = Item.create(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
-        puts "\n You have picked up #{item.name} and it has been added to your inventory."
+        puts "------------------------------------------------------------------------"
+        puts "You have picked up #{item.name} and it has been added to your inventory."
+        puts "------------------------------------------------------------------------"
     end 
 
     #Method to equip or use an item
