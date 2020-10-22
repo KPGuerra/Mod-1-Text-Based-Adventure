@@ -159,7 +159,7 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10 )
+                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10, location: "Intro" )
             end
         when 2
             sleep(1)
@@ -176,7 +176,7 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7)
+                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7, location: "Intro")
             end
         when 3
             sleep(1)
@@ -193,7 +193,7 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5)
+                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5, location: "Intro")
             end
         when 4
             sleep(1)
@@ -210,7 +210,7 @@ class CLI
                 self.start_game
             elsif question == "Yes"
                 #procede to the actual game
-                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9)
+                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9, location: "Intro")
             end
         else 
             system('clear')
@@ -237,13 +237,14 @@ class CLI
         @@prompt.keypress("Return to Menu", keys: [:space, :return])
         self.in_game_menu
       when 3
-         continue
+         @character.where_am_i
       end
     end 
     #=====================================================================================
 
     #STORY ===============================================================================
     def self.story_introduction
+        @character.location = "Intro"
         system('clear')
         sleep(1)
         #puts description of the World and Enviornment
@@ -270,6 +271,7 @@ class CLI
     end 
 
     def self.story_out_of_cell
+        @character.location = "Out of Cell"
         system('clear')
         sleep(1)
         puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end." 

@@ -4,6 +4,15 @@ class Character < ActiveRecord::Base
     has_many :enemies, through: :encounters
     belongs_to :user
 
+#Location ==========================================================================================
+    def where_am_i
+        if self.location == "Intro"
+            CLI.story_introduction
+        elsif self.location == "Out of Cell"
+            CLI.story_out_of_cell
+        end
+    end
+
 #Display Stats =====================================================================================
 #Center these later
     def display_character_stats

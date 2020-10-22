@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_031901) do
+ActiveRecord::Schema.define(version: 2020_10_22_032137) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_031901) do
     t.string "current_weapon"
     t.integer "base_hp"
     t.integer "base_attk"
+    t.string "location"
   end
 
   create_table "encounters", force: :cascade do |t|
