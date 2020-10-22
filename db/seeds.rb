@@ -17,7 +17,7 @@ varos = Enemy.create(name: 'Varos', role: 'Guard', description: 'Trash', hp: 50,
 # yeti = Enemy.create(name: "Yeti", role: "Warrior", description: "A beefy yeti", hp: 100, level: 1),
 
 #Boss --- Level 1
-dragon = Enemy.create(name: "Dragon", role: "Boss", description: "A fire-breathing dragon", hp: 200, level: 10)
+midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
 
 #Characters===================================================================================================================
 #Characters --- Level 1
@@ -31,7 +31,9 @@ first_encounter = Encounter.create(enemy: true, item: false, result: nil, charac
 
 
 #Items====================================================================================================================
-# healing_potion = Item.create(name: "Healing Potion", item_type: "Potion", description: "Healing liquid in a bottle", character_id: azula.id),
-# speed_potion = Item.create(name: "Speed Potion", item_type: "Potion", description: "+1 Speed", character_id: azula.id),
+#STORY ITEMS
+# lantern = Item.create(name: "Lantern", item_type: "Story Item", description: "A rusty Lantern that has plenty of oil.")
+healing_potion = Item.create(name: "Healing Potion", item_type: "Healing Potion", description: "Healing liquid in a bottle")
+attk_potion = Item.create(name: "Attack Potion", item_type: "Attack Potion", description: "A blue cooling liquid that makes you feel stronger")
 # broadsword = Item.create(name: "Broadsword", item_type: "Weapon", description: "+5 Strength", character_id: azula.id)
 

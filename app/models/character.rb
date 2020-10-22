@@ -12,6 +12,10 @@ class Character < ActiveRecord::Base
             CLI.story_out_of_cell
         elsif self.location == "Hallway"
             CLI.story_continue_hallway
+        elsif self.location == "Keypad"
+            CLI.story_key_pad_door
+        elsif self.location == "Boss"
+            CLI.story_boss_room
         end
     end
 
@@ -19,14 +23,14 @@ class Character < ActiveRecord::Base
 #Center these later
     def display_character_stats
         system('clear')
-        puts "------------------"
-        puts "Name: #{self.name}"
-        puts "Role: #{self.role}"
-        puts "Level: #{self.level}"
-        puts "XP: #{self.experience_points}\n\n"
-        puts "Attack: #{self.attack_power}"
-        puts "HP: #{self.hp}"
-        puts "------------------"
+        puts "------------------".center(145)
+        puts "Name: #{self.name}".center(145)
+        puts "Role: #{self.role}".center(145)
+        puts "Level: #{self.level}".center(145)
+        puts "XP: #{self.experience_points}\n\n".center(145)
+        puts "Attack: #{self.attack_power}".center(145)
+        puts "HP: #{self.hp}".center(145)
+        puts "------------------".center(145)
     end
 #====================================================================================================
     
@@ -43,11 +47,11 @@ class Character < ActiveRecord::Base
         end
     end 
 
-    def add_item_to_inventory(name, description, item_type, encounter)
-        item = Item.find_or_create_by(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
-        puts "-----------------------------------------------------------------"
-        puts "|You have picked up #{item.name} and it has been added to your inventory.|"
-        puts "-----------------------------------------------------------------"
+    def add_item_to_inventory(add_item, encounter)
+        add_item.update(encounter_id: encounter.id)
+        puts "-----------------------------------------------------------------".center(145)
+        puts "|You have picked up #{add_item.name} and it has been added to your inventory.|".center(145)
+        puts "-----------------------------------------------------------------".center(145)
     end 
 #Still have to test
     def use_item(item_name)
@@ -88,12 +92,12 @@ class Character < ActiveRecord::Base
 #ENCOUNTER ======================================================================================
     def encounter_item_random
         # Incomplete
+        # Create an array of hash for items ? - Might be a much simpler way
         new_encounter = Encounter.create(enemy: false, item: true, character_id: self.id) # Do we even need this here
         # @@items.sample(1)
     end
 
     def encounter_enemy
-        # Needs workkkk
         new_battle_encounter = Encounter.create(enemy: true, item: false, character_id: self.id)
     end 
 #================================================================================================
@@ -103,8 +107,11 @@ class Character < ActiveRecord::Base
         damage = self.attack_power
         if damage > 0
             enemy.update(hp: enemy.hp - damage)
-            puts "You dealt #{damage} damage!"
-            puts "#{enemy.name} has #{enemy.hp} HP left!"
+            puts "-----------------------------------------------------------------".center(145)
+            puts "You dealt #{damage} damage to #{enemy.name}!".center(145)
+            puts "#{enemy.name} has #{enemy.hp} HP left!".center(145)
+            puts "-----------------------------------------------------------------".center(145)
+            sleep(1)
         end
     end 
 

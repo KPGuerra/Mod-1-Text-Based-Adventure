@@ -4,11 +4,8 @@ class Enemy < ActiveRecord::Base
 
     
 #ENEMY MOVES ==========================================================================================
-
-# Give enemy array of moves. Randomize through them to get attack choices. Maybe the same for character ? Or maybe scripted moves
     @@enemy_attacks = ['Burst', 'Ignite', 'Grip', 'Punch', 'Backstab', 'Scratch']
 
-# Give bosses different attacks ?
     @@boss_attacks = ['Paralyze', 'Riptide', 'Haunt', 'Bloodlust', 'Tremblor', 'Poison']
 
     def enemy_moves
@@ -27,8 +24,11 @@ class Enemy < ActiveRecord::Base
         damage = self.attack_power
         if damage > 0
             character.update(hp: character.hp - damage)
-            puts "#{self.name} dealt #{damage} damage!"
-            puts "#{character.name} has #{character.hp} HP left!"
+            puts "-----------------------------------------------------------------".center(145)
+            puts "#{self.name} dealt #{damage} damage to #{character.name}!".center(145)
+            puts "#{character.name} has #{character.hp} HP left!".center(145)
+            puts "-----------------------------------------------------------------".center(145)
+            sleep(1)
         end
     end
 end

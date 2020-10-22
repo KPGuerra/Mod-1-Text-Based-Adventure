@@ -18,12 +18,12 @@ class Encounter < ActiveRecord::Base
     def winner_or_not_winner(character, enemy)
         if enemy.hp <= 0
             self.update(result: "win")
-            puts "You have defeated #{enemy.name}"
+            puts "You have defeated #{enemy.name}".center(145)
             sleep(1)
         elsif character.hp <= 0 
             system("clear")
             self.update(result: "lost")
-            puts "You have been defeated. GG noob."
+            puts "You have been defeated. GG noob.".center(145)
             sleep(1)
             CLI.user_menu
         end
@@ -37,6 +37,7 @@ class Encounter < ActiveRecord::Base
             puts "\n\n"
             sleep(1)
             enemy.attk_char(character)
+            sleep(1)
         end 
         self.winner_or_not_winner(character, enemy)
     end
