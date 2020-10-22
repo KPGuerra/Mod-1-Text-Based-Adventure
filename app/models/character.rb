@@ -49,7 +49,7 @@ class Character < ActiveRecord::Base
         puts "|You have picked up #{item.name} and it has been added to your inventory.|"
         puts "-----------------------------------------------------------------"
     end 
-
+#Still have to test
     def use_item(item_name)
         item = self.items.find_by(name: item_name)
         if item.item_type == "Healing Potion"
@@ -98,3 +98,15 @@ class Character < ActiveRecord::Base
     end
 end 
 #================================================================================================
+
+#Attack enemy =======================================================================================
+    def attk_enemy(enemy)
+        damage = self.attack_power
+        if damage > 0
+            enemy.update(hp: enemy.hp - damage)
+            puts "You dealt #{damage} damage!"
+            puts "#{enemy.name} has #{enemy.hp} HP left!"
+        end
+    end
+end 
+#========================================================================================================
