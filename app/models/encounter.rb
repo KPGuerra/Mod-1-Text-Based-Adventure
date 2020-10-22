@@ -29,7 +29,9 @@ end
 
 =begin
     def combat(character, enemy)
-        until 
+        until battle_over? == true
+            system('clear')
+
         
         
 =end 

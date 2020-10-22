@@ -149,12 +149,13 @@ class CLI
         when 1
             attks = [8,9,10]
             sleep(1)
+            grimsborth = Character.find_by(name: "Grimsborth")
             puts "----------------"
             puts "Name: Grimsborth"
             puts "Role:    Warrior"
             puts "----------------"
             puts "HP:          150"
-            puts "Attack: #{attks.sample}"
+            puts "Attack:       #{grimsborth.attack_power}"
             puts "----------------"
             question = @@prompt.select("Are you sure?", ["Yes", "No"])
             if question == "No"
@@ -166,7 +167,7 @@ class CLI
                     self.start_game
                 else
                     #procede to the actual game
-                    @character = Character.find_by(name: "Grimsborth")
+                    @character = grimsborth
                     @character.update(user_id: @current_user.id)
                     self.story_introduction
                 end 
