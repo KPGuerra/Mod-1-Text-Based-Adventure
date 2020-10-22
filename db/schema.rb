@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_21_212946) do
+ActiveRecord::Schema.define(version: 2020_10_22_031901) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(version: 2020_10_21_212946) do
   create_table "users", force: :cascade do |t|
     t.string "user_name"
     t.string "password"
-    t.integer "room_count"
   end
 
 end

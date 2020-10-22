@@ -4,7 +4,7 @@ class Character < ActiveRecord::Base
     has_many :enemies, through: :encounters
     belongs_to :user
 
-#Display Stats----------------------------------------------
+#Display Stats =====================================================================================
 #Center these later
     def display_character_stats
         system('clear')
@@ -17,8 +17,9 @@ class Character < ActiveRecord::Base
         puts "HP: #{self.hp}"
         puts "------------------"
     end
+#====================================================================================================
     
-#Inventory Methods---------------------------------------
+#Inventory Methods ==================================================================================
     def display_inventory
         system('clear')
         inventory = self.items
@@ -31,15 +32,13 @@ class Character < ActiveRecord::Base
         end
     end 
 
-    #Successfully adds an item to the character's inventory 
     def add_item_to_inventory(name, description, item_type, encounter)
         item = Item.create(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
-        puts "------------------------------------------------------------------------"
-        puts "You have picked up #{item.name} and it has been added to your inventory."
-        puts "------------------------------------------------------------------------"
+        puts "-----------------------------------------------------------------"
+        puts "|You have picked up #{item.name} and it has been added to your inventory.|"
+        puts "-----------------------------------------------------------------"
     end 
 
-    #Method to equip or use an item
     def use_item(item_name)
         item = self.items.find_by(name: item_name)
         if item.item_type == "Healing Potion"
@@ -73,11 +72,18 @@ class Character < ActiveRecord::Base
             puts "You can't use/equip this!"
         end 
     end 
-    #--------------------------------------------------------
+#================================================================================================
 
-    def ecounter_item_random
+#ENCOUNTER ======================================================================================
+    def encounter_item_random
         # Incomplete
         new_encounter = Encounter.create(enemy: false, item: true, character_id: self.id) # Do we even need this here
         # @@items.sample(1)
     end
+
+    def encounter_enemy
+        # Needs workkkk
+        new_battle_encounter = Encounter.create(enemy: true, item: false, character_id: self.id)
+    end
 end 
+#================================================================================================

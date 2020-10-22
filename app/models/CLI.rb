@@ -4,6 +4,7 @@ class CLI
     @@pastel = Pastel.new
     @@font = TTY::Font.new(:doom)
 
+    #MAIN MENU =====================================================================================
     def self.title
         system('clear')
         sleep(1)
@@ -55,8 +56,9 @@ class CLI
         system("clear")
         self.user_menu
     end 
+    #=====================================================================================
 
-
+    #USER MENU =====================================================================================
     # After user logs in, bring up another menu/options. Ex: Start Game, Instructions/How-to-play, Exit
     def self.user_menu
         system("clear")
@@ -93,7 +95,7 @@ class CLI
             puts "Your username has been succesfully updated"
             self.user_menu
         when 2 # Needs work
-            current_user = User.find_by(user_name: user_name, password: password)
+            
             new_password = @@prompt.ask("Input new password:")
             current_user.update(password: new_password)
             puts "Your password has been successfully updated"
@@ -112,12 +114,26 @@ class CLI
             self.user_menu
         end
     end
+    
+    def self.how_to_play
+        # Go back
+        # Finish up how-to-play
+        puts "Click on Start button, select your character & view their respective stats. Choose another character if not pleased. Then confirm,
+        hop into the game and try to survive defeated enemies and collecting useful items."
+        choice = @@prompt.select("", ["Back", "Exit"])
+        if choice == "Back"
+            self.user_menu
+        else
+            exit
+        end
+    end
 
+    #CHOOSE CHARACTER 
     def self.start_game
         # Characters to choose from:
         # Grimsborth, Kinklesburg, Croesus, Luminol
         # Role -> Huntress, Mercenary, Mage, Warrior
-
+        
         # "Choose Your Character, give an option like the menus, display base stats of that character, able to go back if they don't want that specific character"
         char = @@prompt.select("Choose your character:") do |menu|
             menu.choice "Grimsborth", 1
@@ -201,20 +217,9 @@ class CLI
             exit
         end
     end
+    #=====================================================================================
 
-    def self.how_to_play
-        # Go back
-        # Finish up how-to-play
-        puts "Click on Start button, select your character & view their respective stats. Choose another character if not pleased. Then confirm,
-        hop into the game and try to survive defeated enemies and collecting useful items."
-        choice = @@prompt.select("", ["Back", "Exit"])
-        if choice == "Back"
-            self.user_menu
-        else
-            exit
-        end
-    end
-
+    #IN GAME MENU ========================================================================
     def self.in_game_menu
       choice = @@prompt.select("Menu") do |menu|
           menu.choice "View Inventory", 1
@@ -232,11 +237,12 @@ class CLI
         @@prompt.keypress("Return to Menu", keys: [:space, :return])
         self.in_game_menu
       when 3
-         exit
+         continue
       end
     end 
+    #=====================================================================================
 
-    #Story
+    #STORY ===============================================================================
     def self.story_introduction
         system('clear')
         sleep(1)
@@ -253,7 +259,7 @@ class CLI
         puts "\n You pick it up since this is will be your only light source.\n\n"
 
         #Character picks up the Lantern, this is the first item added to inventory
-        encounter_intro = @character.ecounter_item_random
+        encounter_intro = @character.encounter_item_random
         @character.add_item_to_inventory("Lantern", "Misc", "A rusty Lantern that has plenty of oil.", encounter_intro)
         
 
@@ -263,9 +269,7 @@ class CLI
         system('clear')
     end 
 
-    #Story
-
-    def self.story_out_cell
+    def self.story_out_of_cell
         system('clear')
         sleep(1)
         puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end." 
@@ -289,8 +293,6 @@ class CLI
         when 3
             #define in gmae menu method
             self.in_game_menu
-            #comes back to this prompt agaon after visting the menu where you can view your inventory and stats
-            self.story_out_cell
         end
     end 
 
@@ -307,3 +309,20 @@ class CLI
 
 end 
 # binding.pry
+
+
+=begin
+def self.story_continue_hallway
+    puts "You continue down the hallway. You hold out your lantern. This section of the hallway seems darker."
+    puts "As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched."
+
+    puts "\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing"
+    puts "Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out."
+    puts "\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud."
+    puts "\nBefore you can respond, he attacks you!"
+
+    @character 
+
+
+
+=end

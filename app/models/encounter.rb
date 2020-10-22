@@ -5,21 +5,7 @@ class Encounter < ActiveRecord::Base
 
     @@items = ['Broadsword', 'Health Potion', 'Speed Boost', 'Attack Elixir'] # Add more once all is working good.
 
-    # Item Encounters -------------------------------------------------
-    def self.ecounter_item_weapon
-        # Needs workkkk
-        Encounter.create(enemy: false, item: true)
-    end
-    # def self.ecounter_item_random
-    #     # Incomplete
-    #     new_encounter = Encounter.create(enemy: false, item: true) # Do we even need this here
-    #     # @@items.sample(1)
-    # end
-
     # Enemy Encounter -------------------------------------------------
-    def self.encounter_enemy
-        Encounter.create(enemy: true, item: false)
-    end
 
     # Create enemy
     def self.new_enemy
