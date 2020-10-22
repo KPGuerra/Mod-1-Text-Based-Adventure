@@ -13,17 +13,21 @@ class CLI
 
     def self.main_menu
         sleep(1)
-        user_choice = @@prompt.select("", ["Log In", "Create Account", "Leaderboards", "Exit"])
-        if user_choice == "Log In"
+        user_choice = @@prompt.select("") do |menu|
+            menu.choice "Login", 1
+            menu.choice "Create Account", 2
+            menu.choice "Leaderboards", 3
+            menu.choice "Exit", 4
+        end
+        
+        case user_choice
+        when 1
             self.log_in
-        elsif
-            user_choice == "Create Account"
+        when 2
             self.create_account
-        elsif
-            user_choice == "Leaderboards"
+        when 3
             self.leaderboards
-        elsif
-            user_choice == "Exit"
+        when 4
             system('clear')
             exit
         end
@@ -38,7 +42,11 @@ class CLI
             self.user_menu
         else #user does not exist
             system("clear")
-            choice = @@prompt.select("Username/Password is incorrect",["Retry", "Create A New Account"])
+            choice = @@prompt.select("Username/Password is incorrect") do |menu|
+                menu.choice "Retry", 1
+                menu.choice "Create A New Account", 2
+            end
+
             if choice == "Retry"
                 system("clear")
                 self.log_in
@@ -63,20 +71,28 @@ class CLI
     def self.user_menu
         system("clear")
         # puts "Welcome #{user_name}"
-        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "Select A Save", "How-to-play", "Update Account", "Exit"])
+        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n") do |menu| 
+            menu.choice "Start", 1
+            menu.choice "Select A Save", 2
+            menu.choice "How-to-play", 3
+            menu.choice "Update Account", 4
+            menu.choice "Exit", 5
+        end
+        
+        case choice
         #Start
-        if choice == "Start"
+        when 1
             self.start_game
-        elsif choice == "Select A Save"
+        when 2
             @current_user.has_characters?
         #How-to-play - #back
-        elsif choice == "How-to-play"
+        when 3
             self.how_to_play
         # Update account
-        elsif choice == "Update Account"
+        when 4
             self.account_update
         #Exit
-        else
+        when 5
             exit
         end
     end
@@ -91,19 +107,25 @@ class CLI
         end
 
         case choice
-        when 1 # Needs work
+        when 1 
             new_name = @@prompt.ask("Input new user name:")
-            @current_user.user_name.update(user_name: new_name)
+            @current_user.update(user_name: new_name)
+            system('clear')
+            sleep(1)
             puts "Your username has been succesfully updated"
             self.user_menu
-        when 2 # Needs work
-            
-            new_password = @@prompt.ask("Input new password:")
-            current_user.update(password: new_password)
+        when 2 
+            new_password = @@prompt.mask("Input new password:")
+            @current_user.update(password: new_password)
+            sleep(1)
             puts "Your password has been successfully updated"
             self.user_menu
-        when 3 # WORKSS
-            are_you_sure = @@prompt.select("Are you sure?", ["Yes", "No"])
+        when 3
+            are_you_sure = @@prompt.select("Are you sure?") do |menu|
+                menu.choice "Yes", 1
+                menu.choice "No", 2
+            end
+
             if are_you_sure == "Yes"
                 @current_user.destroy
                 sleep(1.5)
@@ -122,7 +144,11 @@ class CLI
         # Finish up how-to-play
         puts "Click on Start button, select your character & view their respective stats. Choose another character if not pleased. Then confirm,
         hop into the game and try to survive defeated enemies and collecting useful items."
-        choice = @@prompt.select("", ["Back", "Exit"])
+        choice = @@prompt.select("") do |menu|
+            menu.choice "Back", 1
+            menu.choice "Exit", 2
+        end
+
         if choice == "Back"
             self.user_menu
         else
@@ -147,7 +173,6 @@ class CLI
         
         case char
         when 1
-            attks = [8,9,10]
             sleep(1)
             grimsborth = Character.find_by(name: "Grimsborth")
             puts "----------------"
@@ -157,11 +182,15 @@ class CLI
             puts "HP:          150"
             puts "Attack:       #{grimsborth.attack_power}"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["Yes", "No"])
-            if question == "No"
+            choice = @@prompt.select("Are you sure?") do |menu|
+                menu.choice "Yes", 1
+                menu.choice "No", 2
+            end
+
+            if choice == 2
                 system('clear')
                 self.start_game
-            elsif question == "Yes"
+            elsif choice == 1
                 if @current_user.has_specific_character?("Grimsborth")
                     puts "You already have a save with this character!"
                     self.start_game
@@ -174,70 +203,88 @@ class CLI
             end
         when 2
             sleep(1)
+            kinklesburg = Character.find_by(name: "Kinklesburg")
             puts "----------------"
             puts "Name: Kinklesburg"
             puts "Role:   Mercenary"
             puts "----------------"
             puts "HP:          100"
-            puts "Attack:        7"
+            puts "Attack:        #{kinklesburg.attack_power}"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["Yes", "No"])
-            if question == "No"
+            question = @@prompt.select("Are you sure?") do |menu|
+                menu.choice "Yes", 1
+                menu.choice "No", 2
+            end    
+
+            if question == 2
                 system('clear')
                 self.start_game
-            elsif question == "Yes"
+            elsif question == 1
                 if @current_user.has_specific_character?("Kinklesburg")
                     puts "You already have a save with this character!"
                     self.start_game
                 else
                     #procede to the actual game
-                    @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7, location: "Intro")
+                    @character = kinklesburg
+                    @character.update(user_id: @current_user.id)
                     self.story_introduction
                 end
             end
         when 3
             sleep(1)
+            croseus = Character.find_by(name: "Croseus")
             puts "----------------"
             puts "Name:     Croseus"
             puts "Role:    Huntress"
             puts "----------------"
             puts "HP:          110"
-            puts "Attack:        5"
+            puts "Attack:        #{croseus.attack_power}"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["Yes", "No"])
-            if question == "No"
+            question = @@prompt.select("Are you sure?") do |menu|
+                menu.choice "Yes", 1
+                menu.choice "No", 2
+            end
+            
+            if question == 2
                 system('clear')
                 self.start_game
-            elsif question == "Yes"
+            elsif question == 1
                 if @current_user.has_specific_character?("Croseus")
                     puts "You already have a save with this character!"
                     self.start_game
                 else
                     #procede to the actual game
-                    @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5, location: "Intro")
+                    @character = croseus
+                    @character.update(user_id: @current_user.id)
                     self.story_introduction
                 end
             end
         when 4
+            luminol = Character.find_by(name: "Luminol")
             sleep(1)
             puts "----------------"
             puts "Name:    Luminol"
             puts "Role:       Mage"
             puts "----------------"
             puts "HP:           90"
-            puts "Attack:        9"
+            puts "Attack:        #{luminol.attack_power}"
             puts "----------------"
-            question = @@prompt.select("Are you sure?", ["Yes", "No"])
-            if question == "No"
+            question = @@prompt.select("Are you sure?") do |menu|
+                menu.choice "Yes", 1
+                menu.choice "No", 2
+            end
+            
+            if question == 2
                 system('clear')
                 self.start_game
-            elsif question == "Yes"
+            elsif question == 1
                 if @current_user.has_specific_character?("Luminol")
                     puts "You already have a save with this character!"
                     self.start_game
                 else
                     #procede to the actual game
-                    @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9, location: "Intro")
+                    @character = luminol
+                    @character.update(user_id: @current_user.id)
                     self.story_introduction
                 end
             end
@@ -369,10 +416,11 @@ class CLI
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
         #battle start
-        new_battle = @character.encounter_enemy
-        enemy = goblin
-        enemy.update(encounter_id: new_battle)
-
+        battle = @character.encounter_enemy
+        enemy = Enemy.find_by(name: "Goblin")
+        enemy.update(encounter_id: battle)
+        battle.combat(@character, enemy)
+        
 
     end 
 

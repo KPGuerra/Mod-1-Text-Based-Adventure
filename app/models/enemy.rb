@@ -27,7 +27,7 @@ class Enemy < ActiveRecord::Base
         damage = self.attack_power
         if damage > 0
             character.update(hp: character.hp - damage)
-            puts "You dealt #{damage} damage!"
+            puts "#{self.name} dealt #{damage} damage!"
             puts "#{character.name} has #{character.hp} HP left!"
         end
     end

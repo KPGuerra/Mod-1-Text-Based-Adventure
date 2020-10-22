@@ -21,7 +21,10 @@ dragon = Enemy.create(name: "Dragon", role: "Boss", description: "A fire-breathi
 
 #Characters===================================================================================================================
 #Characters --- Level 1
-grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: 0, attack_power: [8,9,10].sample, current_weapon: 'Broadsword', base_hp: 150, base_attk: 10, location: nil)
+grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: 0, attack_power: [8,9,10].sample, current_weapon: 'Basic Broadsword', base_hp: 150)
+kinklesburg = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, attack_power: [6,7,8].sample, current_weapon: "Basic Knife", base_hp: 100)
+croseus = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, attack_power: [5,6,7].sample, current_weapon: 'Basic Bow', base_hp: 110)
+luminol = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, attack_power: [9,10,11].sample, current_weapon: 'Basic Staff', base_hp: 90)
 
 #Encounters===================================================================================================================
 first_encounter = Encounter.create(enemy: true, item: false, result: nil, character_id: grimsborth.id)
