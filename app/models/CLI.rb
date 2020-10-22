@@ -359,12 +359,16 @@ class CLI
     
         puts "You continue down the hallway. You hold out your lantern. This section of the hallway seems darker."
         puts "As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched."
-    
         puts "\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing"
         puts "Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out."
         puts "\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud."
         puts "\nBefore you can respond, he attacks you!"
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
+
+        #battle start
+        new_battle = @character.encounter_enemy
+        enemy = goblin
+        enemy.update(encounter_id: new_battle)
 
 
     end 

@@ -31,4 +31,5 @@ class Enemy < ActiveRecord::Base
             puts "#{character.name} has #{character.hp} HP left!"
         end
     end
+end
 #========================================================================================================

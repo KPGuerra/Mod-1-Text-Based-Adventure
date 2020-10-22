@@ -95,8 +95,7 @@ class Character < ActiveRecord::Base
     def encounter_enemy
         # Needs workkkk
         new_battle_encounter = Encounter.create(enemy: true, item: false, character_id: self.id)
-    end
-end 
+    end 
 #================================================================================================
 
 #Attack enemy =======================================================================================
@@ -107,6 +106,7 @@ end
             puts "You dealt #{damage} damage!"
             puts "#{enemy.name} has #{enemy.hp} HP left!"
         end
-    end
-end 
+    end 
+
+end
 #========================================================================================================

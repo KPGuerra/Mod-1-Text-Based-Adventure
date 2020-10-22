@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     has_many :items, through: :encounters
     has_many :enemies, through: :encounters
 
-#HELPER METHOD ========================================================================
+#HELPER METHODS ========================================================================
     def has_characters?
         if self.characters.count == 0
             puts "You don't have any characters :("
@@ -18,8 +18,6 @@ class User < ActiveRecord::Base
     def has_specific_character?(name)
         self.characters.exists?(name: name)
     end 
-
-
 
 
 end 
