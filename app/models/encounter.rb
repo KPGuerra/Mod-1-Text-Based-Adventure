@@ -9,6 +9,12 @@ class Encounter < ActiveRecord::Base
         Enemy.create(name: "", role: "", description: "", hp: 220, level: 10, attack_power: 20, encounter_id: self.id, boss: true)
     end
 
+    def battle_over?
+        if enemy.hp <= 0 || character.hp <= 0
+            true
+        end 
+    end 
+
     def self.winner_or_not_winner(character, enemy)
         if enemy.hp <= 0
             Encounter.update(result: "win")
@@ -20,3 +26,10 @@ class Encounter < ActiveRecord::Base
         end
     end
 end 
+
+=begin
+    def combat(character, enemy)
+        until 
+        
+        
+=end 

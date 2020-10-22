@@ -21,7 +21,10 @@ dragon = Enemy.create(name: "Dragon", role: "Boss", description: "A fire-breathi
 
 #Characters===================================================================================================================
 #Characters --- Level 1
-grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: nil, user_id: test_user.id, attack_power: [8,9,10].sample, current_weapon: 'Broadsword', base_hp: 150, base_attk: 10, location: nil)
+grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: 0, attack_power: [8,9,10].sample, current_weapon: 'Broadsword', base_hp: 150, base_attk: 10, location: nil)
+
+#Encounters===================================================================================================================
+first_encounter = Encounter.create(enemy: true, item: false, result: nil, character_id: grimsborth.id)
 
 
 #Items====================================================================================================================

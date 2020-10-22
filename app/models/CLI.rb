@@ -147,17 +147,18 @@ class CLI
         
         case char
         when 1
+            attks = [8,9,10]
             sleep(1)
             puts "----------------"
             puts "Name: Grimsborth"
             puts "Role:    Warrior"
             puts "----------------"
             puts "HP:          150"
-            puts "Attack:       10"
+            puts "Attack: #{attks.sample}"
             puts "----------------"
             question = @@prompt.select("Are you sure?", ["Yes", "No"])
             if question == "No"
-                sYesstem('clear')
+                system('clear')
                 self.start_game
             elsif question == "Yes"
                 if @current_user.has_specific_character?("Grimsborth")
@@ -165,7 +166,8 @@ class CLI
                     self.start_game
                 else
                     #procede to the actual game
-                    @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10, location: "Intro" )
+                    @character = Character.find_by(name: "Grimsborth")
+                    @character.update(user_id: @current_user.id)
                     self.story_introduction
                 end 
             end
@@ -263,7 +265,7 @@ class CLI
             @character.where_am_i
         when 2
             Character.find_by(name: user_choice).destroy
-            self.select_save
+            self.user_menu
         when 3
             self.user_menu
         end 
