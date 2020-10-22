@@ -79,19 +79,26 @@ class CLI
 
     # Able to change user_name & pw/ delete account
     def self.account_update
-        choice = @@prompt.select("", ["Update account name", "Update password", "Delete account", "Back"])
-        if choice == "Update account name"
+        choice = @@prompt.select("") do |menu|
+            menu.choice "Update account name", 1
+            menu.choice "Update password", 2
+            menu.choice "Delete account", 3
+            menu.choice "Back", 4
+        end
+
+        case choice
+        when 1 # Needs work
             new_name = @@prompt.ask("Input new user name:")
             @current_user.user_name.update(user_name: new_name)
             puts "Your username has been succesfully updated"
             self.user_menu
-        elsif choice == "Update password"
+        when 2 # Needs work
             current_user = User.find_by(user_name: user_name, password: password)
             new_password = @@prompt.ask("Input new password:")
             current_user.update(password: new_password)
             puts "Your password has been successfully updated"
             self.user_menu
-        elsif choice == "Delete account" # WORKSS
+        when 3 # WORKSS
             are_you_sure = @@prompt.select("Are you sure?", ["Yes", "No"])
             if are_you_sure == "Yes"
                 @current_user.destroy
@@ -101,7 +108,7 @@ class CLI
             elsif are_you_sure == "No"
                 self.account_update
             end
-        elsif choice == "Back"
+        when 4
             self.user_menu
         end
     end
@@ -262,9 +269,9 @@ class CLI
         system('clear')
         sleep(1)
         puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end." 
-        puts "\nAs you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at
-        the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you
-        is dark red and rusted. You can vaguely hear people whispering on the otherside.\n\n"
+        puts "\nAs you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at"
+        puts "the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you is dark red and rusted."
+        puts "You can vaguely hear people whispering on the otherside.\n\n"
         
         choice = @@prompt.select("What would you like to do?") do |menu|
             menu.choice "Continue down the hallway", 1
@@ -274,8 +281,10 @@ class CLI
 
         case choice
         when 1
+            #This leads to a battle 
             puts "placehoalder text"
         when 2
+            #This leads to a weapon
             puts "moore blah text"
         when 3
             #define in gmae menu method
