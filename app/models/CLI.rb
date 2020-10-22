@@ -63,10 +63,12 @@ class CLI
     def self.user_menu
         system("clear")
         # puts "Welcome #{user_name}"
-        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "How-to-play", "Update Account", "Exit"])
+        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n", ["Start", "Select A Save", "How-to-play", "Update Account", "Exit"])
         #Start
         if choice == "Start"
             self.start_game
+        elsif choice == "Select A Save"
+            @current_user.has_characters?
         #How-to-play - #back
         elsif choice == "How-to-play"
             self.how_to_play
@@ -133,7 +135,7 @@ class CLI
         # Characters to choose from:
         # Grimsborth, Kinklesburg, Croesus, Luminol
         # Role -> Huntress, Mercenary, Mage, Warrior
-        
+        # One Save for each character
         # "Choose Your Character, give an option like the menus, display base stats of that character, able to go back if they don't want that specific character"
         char = @@prompt.select("Choose your character:") do |menu|
             menu.choice "Grimsborth", 1
@@ -158,8 +160,14 @@ class CLI
                 sYesstem('clear')
                 self.start_game
             elsif question == "Yes"
-                #procede to the actual game
-                @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10, location: "Intro" )
+                if @current_user.has_specific_character?("Grimsborth")
+                    puts "You already have a save with this character!"
+                    self.start_game
+                else
+                    #procede to the actual game
+                    @character = Character.find_or_create_by(name: "Grimsborth", role: "Warrior", description: "", hp: 150, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 10, current_weapon: nil, base_hp: 150,  base_attk: 10, location: "Intro" )
+                    self.story_introduction
+                end 
             end
         when 2
             sleep(1)
@@ -175,8 +183,14 @@ class CLI
                 system('clear')
                 self.start_game
             elsif question == "Yes"
-                #procede to the actual game
-                @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7, location: "Intro")
+                if @current_user.has_specific_character?("Kinklesburg")
+                    puts "You already have a save with this character!"
+                    self.start_game
+                else
+                    #procede to the actual game
+                    @character = Character.find_or_create_by(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 7, current_weapon: nil, base_hp: 100,  base_attk: 7, location: "Intro")
+                    self.story_introduction
+                end
             end
         when 3
             sleep(1)
@@ -192,8 +206,14 @@ class CLI
                 system('clear')
                 self.start_game
             elsif question == "Yes"
-                #procede to the actual game
-                @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5, location: "Intro")
+                if @current_user.has_specific_character?("Croseus")
+                    puts "You already have a save with this character!"
+                    self.start_game
+                else
+                    #procede to the actual game
+                    @character = Character.find_or_create_by(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 5, current_weapon: nil, base_hp: 110,  base_attk: 5, location: "Intro")
+                    self.story_introduction
+                end
             end
         when 4
             sleep(1)
@@ -209,14 +229,45 @@ class CLI
                 system('clear')
                 self.start_game
             elsif question == "Yes"
-                #procede to the actual game
-                @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9, location: "Intro")
+                if @current_user.has_specific_character?("Luminol")
+                    puts "You already have a save with this character!"
+                    self.start_game
+                else
+                    #procede to the actual game
+                    @character = Character.find_or_create_by(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, user_id: @current_user.id, attack_power: 9, current_weapon: nil, base_hp: 90,  base_attk: 9, location: "Intro")
+                    self.story_introduction
+                end
             end
         else 
             system('clear')
             exit
         end
     end
+
+    def self.select_save
+        puts "Here are your current saves:"
+        sorted_character_list = @current_user.characters.order(:id)
+        sorted_character_names = sorted_character_list.map {|character| character.name}
+        sorted_character_list.each do |character|
+            puts "Name: #{character.name} --- Location: #{character.location}"
+        end
+        user_choice = @@prompt.select("Select A Save", [sorted_character_names])
+        choice = @@prompt.select("Choose one of the following:") do |menu|
+            menu.choice "Continue Save", 1
+            menu.choice "Delete Save", 2
+            menu.choice "Back", 3
+        end 
+        case choice
+        when 1
+            @character = Character.find_by(name: user_choice)
+            @character.where_am_i
+        when 2
+            Character.find_by(name: user_choice).destroy
+            self.select_save
+        when 3
+            self.user_menu
+        end 
+    end 
     #=====================================================================================
 
     #IN GAME MENU ========================================================================
@@ -225,6 +276,7 @@ class CLI
           menu.choice "View Inventory", 1
           menu.choice "View Character Stats", 2
           menu.choice "Return to Game", 3
+          menu.choice "Quit Game"
       end
 
       case choice
@@ -238,13 +290,15 @@ class CLI
         self.in_game_menu
       when 3
          @character.where_am_i
+      when 4
+        self.main_menu
       end
     end 
     #=====================================================================================
 
     #STORY ===============================================================================
     def self.story_introduction
-        @character.location = "Intro"
+        @character.update(location: "Intro")
         system('clear')
         sleep(1)
         #puts description of the World and Enviornment
@@ -268,10 +322,11 @@ class CLI
         puts "\n You push open the heavy door and begin your journey to find your way home \n\n"
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
+        self.story_out_of_cell
     end 
 
     def self.story_out_of_cell
-        @character.location = "Out of Cell"
+        @character.update(location: "Out of Cell")
         system('clear')
         sleep(1)
         puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end." 
@@ -287,8 +342,7 @@ class CLI
 
         case choice
         when 1
-            #This leads to a battle 
-            puts "placehoalder text"
+            self.story_continue_hallway
         when 2
             #This leads to a weapon
             puts "moore blah text"
@@ -296,10 +350,25 @@ class CLI
             #define in gmae menu method
             self.in_game_menu
         end
+    end
+
+    def self.story_continue_hallway
+        @character.update(location: "Hallway")
+        system('clear')
+        sleep(1)
+    
+        puts "You continue down the hallway. You hold out your lantern. This section of the hallway seems darker."
+        puts "As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched."
+    
+        puts "\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing"
+        puts "Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out."
+        puts "\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud."
+        puts "\nBefore you can respond, he attacks you!"
+        @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
+
+
     end 
 
-    
-    #In game menu -- options: (View Inventory, View Stats, Quit)
 
 
     # Then after intro hop into story line --> FUN BUNCH OF STRINGSSS
@@ -311,20 +380,3 @@ class CLI
 
 end 
 # binding.pry
-
-
-=begin
-def self.story_continue_hallway
-    puts "You continue down the hallway. You hold out your lantern. This section of the hallway seems darker."
-    puts "As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched."
-
-    puts "\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing"
-    puts "Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out."
-    puts "\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud."
-    puts "\nBefore you can respond, he attacks you!"
-
-    @character 
-
-
-
-=end

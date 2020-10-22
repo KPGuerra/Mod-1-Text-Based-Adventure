@@ -10,6 +10,8 @@ class Character < ActiveRecord::Base
             CLI.story_introduction
         elsif self.location == "Out of Cell"
             CLI.story_out_of_cell
+        elsif self.location == "Hallway"
+            CLI.story_continue_hallway
         end
     end
 
@@ -35,14 +37,14 @@ class Character < ActiveRecord::Base
         if inventory.count == 0
             puts "Your inventory is empty."
         else 
-            inventory.each do |item|
+            inventory.reload.map do |item|
                 puts "#{item.name}: #{item.description}"
             end
         end
     end 
 
     def add_item_to_inventory(name, description, item_type, encounter)
-        item = Item.create(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
+        item = Item.find_or_create_by(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
         puts "-----------------------------------------------------------------"
         puts "|You have picked up #{item.name} and it has been added to your inventory.|"
         puts "-----------------------------------------------------------------"
