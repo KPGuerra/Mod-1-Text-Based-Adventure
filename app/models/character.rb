@@ -3,6 +3,7 @@ class Character < ActiveRecord::Base
     has_many :items, through: :encounters
     has_many :enemies, through: :encounters
     belongs_to :user
+    @@pastel = Pastel.new
 
 #Location ==========================================================================================
     def where_am_i
@@ -49,9 +50,9 @@ class Character < ActiveRecord::Base
 
     def add_item_to_inventory(add_item, encounter)
         add_item.update(encounter_id: encounter.id)
-        puts "-----------------------------------------------------------------".center(145)
-        puts "|You have picked up #{add_item.name} and it has been added to your inventory.|".center(145)
-        puts "-----------------------------------------------------------------".center(145)
+        puts @@pastel.magenta("-----------------------------------------------------------------".center(145))
+        puts @@pastel.magenta("|You have picked up #{add_item.name} and it has been added to your inventory.|".center(145))
+        puts @@pastel.magenta("-----------------------------------------------------------------".center(145))
     end 
 #Still have to test
     def use_item(item_name)
@@ -107,10 +108,10 @@ class Character < ActiveRecord::Base
         damage = self.attack_power
         if damage > 0
             enemy.update(hp: enemy.hp - damage)
-            puts "-----------------------------------------------------------------".center(145)
-            puts "You dealt #{damage} damage to #{enemy.name}!".center(145)
-            puts "#{enemy.name} has #{enemy.hp} HP left!".center(145)
-            puts "-----------------------------------------------------------------".center(145)
+            puts @@pastel.green("-----------------------------------------------------------------".center(145))
+            puts @@pastel.green("You dealt #{damage} damage to #{enemy.name}!".center(145))
+            puts @@pastel.green("#{enemy.name} has #{enemy.hp} HP left!".center(145))
+            puts @@pastel.green("-----------------------------------------------------------------".center(145))
             sleep(1)
         end
     end 
