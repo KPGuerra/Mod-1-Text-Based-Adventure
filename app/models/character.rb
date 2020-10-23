@@ -3,43 +3,58 @@ class Character < ActiveRecord::Base
     has_many :items, through: :encounters
     has_many :enemies, through: :encounters
     belongs_to :user
+    @@pastel = Pastel.new
 
-#Display Stats----------------------------------------------
+#Location ==========================================================================================
+    def where_am_i
+        if self.location == "Intro"
+            CLI.story_introduction
+        elsif self.location == "Out of Cell"
+            CLI.story_out_of_cell
+        elsif self.location == "Hallway"
+            CLI.story_continue_hallway
+        elsif self.location == "Keypad"
+            CLI.story_key_pad_door
+        elsif self.location == "Boss"
+            CLI.story_boss_room
+        end
+    end
+
+#Display Stats =====================================================================================
 #Center these later
     def display_character_stats
         system('clear')
-        puts "------------------"
-        puts "Name: #{self.name}"
-        puts "Role: #{self.role}"
-        puts "Level: #{self.level}"
-        puts "XP: #{self.experience_points}\n\n"
-        puts "Attack: #{self.attack_power}"
-        puts "HP: #{self.hp}"
-        puts "------------------"
+        puts "------------------".center(145)
+        puts "Name: #{self.name}".center(145)
+        puts "Role: #{self.role}".center(145)
+        puts "Level: #{self.level}".center(145)
+        puts "XP: #{self.experience_points}\n\n".center(145)
+        puts "Attack: #{self.attack_power}".center(145)
+        puts "HP: #{self.hp}".center(145)
+        puts "------------------".center(145)
     end
+#====================================================================================================
     
-#Inventory Methods---------------------------------------
+#Inventory Methods ==================================================================================
     def display_inventory
         system('clear')
         inventory = self.items
         if inventory.count == 0
             puts "Your inventory is empty."
         else 
-            inventory.each do |item|
+            inventory.reload.map do |item|
                 puts "#{item.name}: #{item.description}"
             end
         end
     end 
 
-    #Successfully adds an item to the character's inventory 
-    def add_item_to_inventory(name, description, item_type, encounter)
-        item = Item.create(name: name, description: description, item_type: item_type, encounter_id: encounter.id)
-        puts "------------------------------------------------------------------------"
-        puts "You have picked up #{item.name} and it has been added to your inventory."
-        puts "------------------------------------------------------------------------"
+    def add_item_to_inventory(add_item, encounter)
+        add_item.update(encounter_id: encounter.id)
+        puts @@pastel.magenta("-----------------------------------------------------------------".center(145))
+        puts @@pastel.magenta("|You have picked up #{add_item.name} and it has been added to your inventory.|".center(145))
+        puts @@pastel.magenta("-----------------------------------------------------------------".center(145))
     end 
-
-    #Method to equip or use an item
+#Still have to test
     def use_item(item_name)
         item = self.items.find_by(name: item_name)
         if item.item_type == "Healing Potion"
@@ -73,11 +88,33 @@ class Character < ActiveRecord::Base
             puts "You can't use/equip this!"
         end 
     end 
-    #--------------------------------------------------------
+#================================================================================================
 
-    def ecounter_item_random
+#ENCOUNTER ======================================================================================
+    def encounter_item_random
         # Incomplete
+        # Create an array of hash for items ? - Might be a much simpler way
         new_encounter = Encounter.create(enemy: false, item: true, character_id: self.id) # Do we even need this here
         # @@items.sample(1)
     end
-end 
+
+    def encounter_enemy
+        new_battle_encounter = Encounter.create(enemy: true, item: false, character_id: self.id)
+    end 
+#================================================================================================
+
+#Attack enemy =======================================================================================
+    def attk_enemy(enemy)
+        damage = self.attack_power
+        if damage > 0
+            enemy.update(hp: enemy.hp - damage)
+            puts @@pastel.green("-----------------------------------------------------------------".center(145))
+            puts @@pastel.green("You dealt #{damage} damage to #{enemy.name}!".center(145))
+            puts @@pastel.green("#{enemy.name} has #{enemy.hp} HP left!".center(145))
+            puts @@pastel.green("-----------------------------------------------------------------".center(145))
+            sleep(1)
+        end
+    end 
+
+end
+#========================================================================================================
