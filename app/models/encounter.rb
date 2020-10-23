@@ -3,7 +3,7 @@ class Encounter < ActiveRecord::Base
     has_many :enemies
     belongs_to :character
 
-    @@items = ['Broadsword', 'Health Potion', 'Speed Boost', 'Attack Elixir'] # Add more once all is working good.
+    @@items = ['Broadsword', 'Health Potion', 'Speed Boost', 'Attack Elixir'] 
 
     def self.new_boss
         Enemy.create(name: "", role: "", description: "", hp: 220, level: 10, attack_power: 20, encounter_id: self.id, boss: true)

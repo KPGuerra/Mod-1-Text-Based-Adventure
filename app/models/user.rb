@@ -18,6 +18,4 @@ class User < ActiveRecord::Base
     def has_specific_character?(name)
         self.characters.exists?(name: name)
     end 
-
-
 end 

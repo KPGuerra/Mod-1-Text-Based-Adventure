@@ -5,14 +5,12 @@ class Enemy < ActiveRecord::Base
     
 #ENEMY MOVES ==========================================================================================
     @@enemy_attacks = ['Burst', 'Ignite', 'Grip', 'Punch', 'Backstab', 'Scratch']
-
-    @@boss_attacks = ['Paralyze', 'Riptide', 'Haunt', 'Bloodlust', 'Tremblor', 'Poison']
-
     def enemy_moves
         moves = @@enemy_attacks.sample(4)
         moves
     end
-
+    
+    @@boss_attacks = ['Paralyze', 'Riptide', 'Haunt', 'Bloodlust', 'Tremblor', 'Poison']
     def boss_moves
         moves = @@boss_attacks.sample(4)
         moves

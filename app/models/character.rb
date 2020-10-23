@@ -28,7 +28,6 @@ class Character < ActiveRecord::Base
         puts "Name: #{self.name}".center(145)
         puts "Role: #{self.role}".center(145)
         puts "Level: #{self.level}".center(145)
-        puts "XP: #{self.experience_points}\n\n".center(145)
         puts "Attack: #{self.attack_power}".center(145)
         puts "HP: #{self.hp}".center(145)
         puts "------------------".center(145)
@@ -94,7 +93,7 @@ class Character < ActiveRecord::Base
     def encounter_item_random
         # Incomplete
         # Create an array of hash for items ? - Might be a much simpler way
-        new_encounter = Encounter.create(enemy: false, item: true, character_id: self.id) # Do we even need this here
+        new_encounter = Encounter.find_or_create_by(enemy: false, item: true, character_id: self.id) # Do we even need this here
         # @@items.sample(1)
     end
 

@@ -113,17 +113,15 @@ class CLI
             new_name = @@prompt.ask("Input new username:")
             @current_user.update(user_name: new_name)
             @@spinner.auto_spin
-            sleep(1)
+            sleep(1.5)
             @@spinner.stop("Your username has been successfully updated")
             self.user_menu
         when 2 
             new_password = @@prompt.mask("Input new password:")
             @current_user.update(password: new_password)
             @@spinner.auto_spin
-            sleep(1)
+            sleep(1.5)
             @@spinner.stop("Your password has been successfully updated")
-
-            # puts "Your password has been successfully updated"
             self.user_menu
         when 3
             are_you_sure = @@prompt.select("Are you sure?") do |menu|
@@ -135,7 +133,6 @@ class CLI
                 @current_user.destroy
                 @@spinner.auto_spin
                 sleep(2)
-                # puts "Your account has been successfully deleted"
                 @@spinner.stop("Your account has been successfully deleted")
                 self.main_menu
             elsif are_you_sure == 2
@@ -180,7 +177,7 @@ class CLI
         
         case char
         when 1
-            grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: 0, attack_power: 15 , current_weapon: 'Basic Broadsword', base_hp: 150)
+            grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'A tall warrior with a broadsword.', hp: 150, level: 1, experience_points: 0, attack_power: 15 , current_weapon: 'Basic Broadsword', base_hp: 150)
             sleep(1)
             puts "\n"
             puts "----------------".center(145)
@@ -211,7 +208,7 @@ class CLI
             end
         when 2
             sleep(1)
-            kinklesburg = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, attack_power: 12, current_weapon: "Basic Knife", base_hp: 100)
+            kinklesburg = Character.create(name: "Kinklesburg", role: "Mercenary", description: "A mercenary with a plain knife.", hp: 100, level: 1, experience_points: 0, attack_power: 12, current_weapon: "Basic Knife", base_hp: 100)
             sleep(1)
             puts "-----------------".center(145)
             puts "Name: Kinklesburg".center(145)
@@ -241,7 +238,7 @@ class CLI
             end
         when 3
             sleep(1)
-            croseus = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, attack_power: 11, current_weapon: 'Basic Bow', base_hp: 110)
+            croseus = Character.create(name: "Croseus", role: "Huntress", description: "A huntress with a basic bow.", hp: 110, level: 1, experience_points: 0, attack_power: 11, current_weapon: 'Basic Bow', base_hp: 110)
             puts "----------------".center(145)
             puts "Name:    Croseus".center(145)
             puts "Role:   Huntress".center(145)
@@ -269,7 +266,7 @@ class CLI
                 end
             end
         when 4
-            luminol = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, attack_power: 14, current_weapon: 'Basic Staff', base_hp: 90)
+            luminol = Character.create(name: "Luminol", role: "Mage", description: "An old mage with a staff.", hp: 90, level: 1, experience_points: 0, attack_power: 14, current_weapon: 'Basic Staff', base_hp: 90)
             sleep(1)
             puts "----------------".center(145)
             puts "Name:    Luminol".center(145)
@@ -323,7 +320,10 @@ class CLI
             @character = Character.find_by(name: user_choice, user_id: @current_user)
             @character.where_am_i
         when 2
-            Character.find_by(name: user_choice, user_id: @current_user).destroy
+            delete_char = Character.find_by(name: user_choice, user_id: @current_user)
+            delete_char.items.destroy
+            delete_char.encounters.destroy
+            delete_char.destroy
             @@spinner.auto_spin
             sleep(1)
             @@spinner.stop("Done!")
@@ -384,7 +384,7 @@ class CLI
 
         #Character picks up the Lantern, this is the first item added to inventory
         encounter_intro = @character.encounter_item_random
-        lantern = Item.create(name: "Lantern", item_type: "Story Item", description: "A rusty Lantern that has plenty of oil.")
+        lantern = Item.find_or_create_by(name: "Lantern", item_type: "Story Item", description: "A rusty Lantern that has plenty of oil.")
         @character.add_item_to_inventory(lantern, encounter_intro)
         
 
@@ -433,7 +433,6 @@ class CLI
     end
 
     def self.story_continue_hallway
-        goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
         @character.update(location: "Hallway")
         system('clear')
         sleep(1)
@@ -447,11 +446,11 @@ class CLI
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
         #battle start
-        goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
+        goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, boss: false)
         battle = @character.encounter_enemy
-        enemy = Enemy.find_by(name: "Goblin")
-        enemy.update(encounter_id: battle.id)
-        battle.combat(@character, enemy)
+        goblin.update(encounter_id: battle.id)
+        battle.combat(@character, goblin)
+        goblin.destroy
 
         system('clear')
         puts @@pastel.green.bold("\nThe goblin falls over. He lies on the floor, barely conscious, fully aware that he will die soon.".center(180))
@@ -473,7 +472,7 @@ class CLI
         puts @@pastel.green.bold("You are met with a heavy metal door with a keypad. There is writing above that says:")
         puts @@pastel.green.bold("\n\n 'I am a three digit number.")
         puts @@pastel.green.bold("The second number is five more than the third.")
-        puts @@pastel.green.bold("The first number is eight less than the third.")
+        puts @@pastel.green.bold("The first number is eight less than the second.")
         puts @@pastel.green.bold("Solving me is the key.'")
         puts "\n\n"
         puts @@pastel.green.bold("The keypad on the door has numbers 1-9 on it.\n")
@@ -517,11 +516,11 @@ class CLI
         puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tough fight!")
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         
-        midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
+        midir = Enemy.find_or_create_by(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
         boss_battle = @character.encounter_enemy
-        enemy = Enemy.find_by(name: "Darkeater Midir")
-        enemy.update(encounter_id: boss_battle.id)
-        boss_battle.combat(@character, enemy)
+        midir.update(encounter_id: boss_battle.id)
+        boss_battle.combat(@character, midir)
+        midir.destroy
     
         system('clear')
         puts @@pastel.green.bold("\nAfter an exhausting fight, the dragon is defeated. The dragon slumps over making a huge thud noise.")
