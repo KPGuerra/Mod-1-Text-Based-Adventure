@@ -24,7 +24,7 @@ class Encounter < ActiveRecord::Base
             system("clear")
             self.update(result: "lost")
             puts "You have been defeated. GG noob.".center(145)
-            sleep(1)
+            sleep(3)
             CLI.user_menu
         end
     end
