@@ -516,7 +516,7 @@ class CLI
         puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tough fight!")
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         
-        midir = Enemy.find_or_create_by(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
+        midir = Enemy.find_or_create_by(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 100, level: 1, attack_power: [8,10,12].sample, boss: true)
         boss_battle = @character.encounter_enemy
         midir.update(encounter_id: boss_battle.id)
         boss_battle.combat(@character, midir)
