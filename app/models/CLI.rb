@@ -17,8 +17,7 @@ class CLI
         user_choice = @@prompt.select("") do |menu|
             menu.choice "Login".center(145), 1
             menu.choice "Create Account".center(145), 2
-            menu.choice "Leaderboards\n".center(145), 3
-            menu.choice "Exit".center(145), 4
+            menu.choice "Exit".center(145), 3
         end
         
         case user_choice
@@ -27,8 +26,6 @@ class CLI
         when 2
             self.create_account
         when 3
-            self.leaderboards
-        when 4
             system('clear')
             exit
         end
@@ -41,7 +38,7 @@ class CLI
             @current_user = User.find_by(user_name: user_name, password: password)
             system('clear')
             self.user_menu
-        else #user does not exist
+        else
             system("clear")
             choice = @@prompt.select("Username/Password is incorrect") do |menu|
                 menu.choice "Retry".center(145), 1
@@ -70,6 +67,7 @@ class CLI
     #USER MENU =====================================================================================
     # After user logs in, bring up another menu/options. Ex: Start Game, Instructions/How-to-play, Exit
     def self.user_menu
+        sleep(1)
         system("clear")
         # puts "Welcome #{user_name}"
         choice = @@prompt.select(@@pastel.yellow("Welcome #{@current_user.user_name}\n\n".center(150))) do |menu| 
@@ -109,17 +107,20 @@ class CLI
 
         case choice
         when 1 
-            new_name = @@prompt.ask("Input new user name:")
+            new_name = @@prompt.ask("Input new username:")
             @current_user.update(user_name: new_name)
-            system('clear')
+            @@spinner.auto_spin
             sleep(1)
-            puts "Your username has been succesfully updated"
+            @@spinner.stop("Your username has been successfully updated")
             self.user_menu
         when 2 
             new_password = @@prompt.mask("Input new password:")
             @current_user.update(password: new_password)
+            @@spinner.auto_spin
             sleep(1)
-            puts "Your password has been successfully updated"
+            @@spinner.stop("Your password has been successfully updated")
+
+            # puts "Your password has been successfully updated"
             self.user_menu
         when 3
             are_you_sure = @@prompt.select("Are you sure?") do |menu|
@@ -176,14 +177,15 @@ class CLI
         
         case char
         when 1
+            grimsborth = Character.create(name: 'Grimsborth', role: 'Warrior', description: 'Combatant', hp: 150, level: 1, experience_points: 0, attack_power: 15 , current_weapon: 'Basic Broadsword', base_hp: 150)
             sleep(1)
-            grimsborth = Character.find_by(name: "Grimsborth")
+            puts "\n"
             puts "----------------".center(145)
             puts "Name: Grimsborth".center(145)
             puts "Role:    Warrior".center(145)
             puts "----------------".center(145)
             puts "HP:          150".center(145)
-            puts "Attack:       #{grimsborth.attack_power}".center(145)
+            puts "Attack:       15".center(145)
             puts "----------------".center(145)
             choice = @@prompt.select("Are you sure?") do |menu|
                 menu.choice "Yes".center(145), 1
@@ -206,14 +208,15 @@ class CLI
             end
         when 2
             sleep(1)
-            kinklesburg = Character.find_by(name: "Kinklesburg")
-            puts "----------------"
-            puts "Name: Kinklesburg"
-            puts "Role:   Mercenary"
-            puts "----------------"
-            puts "HP:          100"
-            puts "Attack:        #{kinklesburg.attack_power}"
-            puts "----------------"
+            kinklesburg = Character.create(name: "Kinklesburg", role: "Mercenary", description: "", hp: 100, level: 1, experience_points: 0, attack_power: 12, current_weapon: "Basic Knife", base_hp: 100)
+            sleep(1)
+            puts "-----------------".center(145)
+            puts "Name: Kinklesburg".center(145)
+            puts "Role:   Mercenary".center(145)
+            puts "-----------------".center(145)
+            puts "HP:           100".center(145)
+            puts "Attack:         #{kinklesburg.attack_power}".center(145)
+            puts "----------------".center(145)
             question = @@prompt.select("Are you sure?") do |menu|
                 menu.choice "Yes".center(145), 1
                 menu.choice "No".center(145), 2
@@ -235,14 +238,14 @@ class CLI
             end
         when 3
             sleep(1)
-            croseus = Character.find_by(name: "Croseus")
-            puts "----------------"
-            puts "Name:     Croseus"
-            puts "Role:    Huntress"
-            puts "----------------"
-            puts "HP:          110"
-            puts "Attack:        #{croseus.attack_power}"
-            puts "----------------"
+            croseus = Character.create(name: "Croseus", role: "Huntress", description: "", hp: 110, level: 1, experience_points: 0, attack_power: 11, current_weapon: 'Basic Bow', base_hp: 110)
+            puts "----------------".center(145)
+            puts "Name:    Croseus".center(145)
+            puts "Role:   Huntress".center(145)
+            puts "----------------".center(145)
+            puts "HP:          110".center(145)
+            puts "Attack:       #{croseus.attack_power}".center(145)
+            puts "----------------".center(145)
             question = @@prompt.select("Are you sure?") do |menu|
                 menu.choice "Yes".center(145), 1
                 menu.choice "No".center(145), 2
@@ -263,15 +266,15 @@ class CLI
                 end
             end
         when 4
-            luminol = Character.find_by(name: "Luminol")
+            luminol = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, attack_power: 13, current_weapon: 'Basic Staff', base_hp: 90)
             sleep(1)
-            puts "----------------"
-            puts "Name:    Luminol"
-            puts "Role:       Mage"
-            puts "----------------"
-            puts "HP:           90"
-            puts "Attack:        #{luminol.attack_power}"
-            puts "----------------"
+            puts "----------------".center(145)
+            puts "Name:    Luminol".center(145)
+            puts "Role:       Mage".center(145)
+            puts "----------------".center(145)
+            puts "HP:           90".center(145)
+            puts "Attack:        #{luminol.attack_power}".center(145)
+            puts "----------------".center(145)
             question = @@prompt.select("Are you sure?") do |menu|
                 menu.choice "Yes".center(145), 1
                 menu.choice "No".center(145), 2
@@ -298,12 +301,14 @@ class CLI
     end
 
     def self.select_save
-        puts "Here are your current saves:"
+        puts "Here are your current saves:\n"
+        puts "----------------------------------------------------"
         sorted_character_list = @current_user.characters.order(:id)
         sorted_character_names = sorted_character_list.map {|character| character.name}
         sorted_character_list.each do |character|
             puts "Name: #{character.name} --- Location: #{character.location}"
         end
+        puts "\n"
         user_choice = @@prompt.select("Select A Save", [sorted_character_names])
         choice = @@prompt.select("Choose one of the following:") do |menu|
             menu.choice "Continue Save".center(145), 1
@@ -312,10 +317,10 @@ class CLI
         end 
         case choice
         when 1
-            @character = Character.find_by(name: user_choice)
+            @character = Character.find_by(name: user_choice, user_id: @current_user)
             @character.where_am_i
         when 2
-            Character.find_by(name: user_choice).destroy
+            Character.find_by(name: user_choice, user_id: @current_user).destroy
             self.user_menu
         when 3
             self.user_menu
@@ -325,6 +330,9 @@ class CLI
 
     #IN GAME MENU ========================================================================
     def self.in_game_menu
+        system('clear')
+        puts @@pastel.blue.bold(@@font.write("User Menu".center(25), letter_spacing: 4))
+        puts "========================================================================================================================================================"
         choice = @@prompt.select("Menu") do |menu|
             menu.choice "View Inventory".center(145), 1
             menu.choice "View Character Stats".center(145), 2
@@ -357,16 +365,16 @@ class CLI
         system('clear')
         sleep(1)
         #puts description of the World and Enviornment
-        puts "\n You are #{@character.name}. #{@character.description}.".center(200)
-        puts "\n You wake up in an empty dungeon cell. Its dark and cold, you can barely see in front of you.".center(200)
-        puts "\n Suddenly the gate to your cell falls open allowing you to escape. You don't know where you are or how you got here.".center(200)
-        puts "\n All you know is that you must find a way out of here. \n\n".center(200)
+        puts @@pastel.green.bold("\nYou are #{@character.name} | #{@character.description}.".center(200))
+        puts @@pastel.green.bold"\nYou wake up in an empty dungeon cell. Its dark and cold, you can barely see in front of you.".center(200)
+        puts @@pastel.green.bold"\nSuddenly the gate to your cell falls open allowing you to escape. You don't know where you are or how you got here.".center(200)
+        puts @@pastel.green.bold"\nAll you know is that you must find a way out of here. \n\n".center(200)
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
-        puts "\n You cautiously step outside of cell. You find yourself in a long hallway with only one exit.".center(200)
-        puts "\n As you walk to end of the hallway you pass by other empty cells. You seem to be alone.".center(200)
-        puts "\n At the end of the hallway, you find a lantern on the floor".center(200)
-        puts "\n You pick it up since this is will be your only light source.\n\n".center(200)
+        puts @@pastel.green.bold"\nYou cautiously step outside of cell. You find yourself in a long hallway with only one exit.".center(200)
+        puts @@pastel.green.bold"\nAs you walk to end of the hallway you pass by other empty cells. You seem to be alone.".center(200)
+        puts @@pastel.green.bold"\nAt the end of the hallway, you find a lantern on the floor".center(200)
+        puts @@pastel.green.bold"\nYou pick it up since this is will be your only light source.\n\n".center(200)
 
         #Character picks up the Lantern, this is the first item added to inventory
         encounter_intro = @character.encounter_item_random
@@ -374,8 +382,8 @@ class CLI
         @character.add_item_to_inventory(lantern, encounter_intro)
         
 
-        puts "\n\n After equiping and turning on the lantern. You realize you are standing in front of a large door.".center(200)
-        puts "\n You push open the heavy door and begin your journey to find your way home \n\n".center(200)
+        puts @@pastel.green.bold("\nAfter equiping and turning on the lantern. You realize you are standing in front of a large door.".center(200))
+        puts @@pastel.green.bold("You push open the heavy door and begin your journey to find your way home \n\n".center(200))
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
         self.story_out_of_cell
@@ -385,10 +393,10 @@ class CLI
         @character.update(location: "Out of Cell")
         system('clear')
         sleep(1)
-        puts "\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end.".center(180) 
-        puts "\nAs you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at".center(180)
-        puts "the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you is dark red and rusted.".center(180)
-        puts "You can vaguely hear people whispering on the otherside.\n\n".center(180)
+        puts @@pastel.green.bold("\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end.".center(180)) 
+        puts @@pastel.green.bold("As you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at".center(180))
+        puts @@pastel.green.bold("the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you is dark red and rusted.".center(180))
+        puts @@pastel.green.bold("You can vaguely hear people whispering on the otherside.\n\n".center(180))
         
         choice = @@prompt.select("What would you like to do?") do |menu|
             menu.choice "Continue down the hallway".center(145), 1
@@ -440,7 +448,7 @@ class CLI
         system('clear')
         puts "\nThe goblin falls over. He lies on the floor, barely concious, fully aware that he will die soon.".center(180)
         puts "You try to ask him where you are. He coughs up a laugh. 'Listen human, you are miles away from the surface' he says.".center(180)
-        puts "'To get ther, you would have to climb 10 floors and open the....gates' His voice trails off. And just like that he is dead.".center(180)
+        puts "'To get there, you would have to climb 10 floors and open the....gates' His voice trails off. And just like that he is dead.".center(180)
         puts "\n You wonder what the gates are. And what does he mean by surface? Is that home? Well, there is one way to find out.".center(180)
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         
