@@ -377,10 +377,10 @@ class CLI
         puts @@pastel.green.bold"\nAll you know is that you must find a way out of here. \n\n".center(200)
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         system('clear')
-        puts @@pastel.green.bold"\nYou cautiously step outside of cell. You find yourself in a long hallway with only one exit.".center(200)
-        puts @@pastel.green.bold"\nAs you walk to end of the hallway you pass by other empty cells. You seem to be alone.".center(200)
+        puts @@pastel.green.bold"\nYou cautiously step outside of the cell. You find yourself in a long hallway with only one exit.".center(200)
+        puts @@pastel.green.bold"\nAs you walk to the end of the hallway you pass by other empty cells. You seem to be alone.".center(200)
         puts @@pastel.green.bold"\nAt the end of the hallway, you find a lantern on the floor".center(200)
-        puts @@pastel.green.bold"\nYou pick it up since this is will be your only light source.\n\n".center(200)
+        puts @@pastel.green.bold"\nYou pick it up, since this will be your only light source.\n\n".center(200)
 
         #Character picks up the Lantern, this is the first item added to inventory
         encounter_intro = @character.encounter_item_random
@@ -399,10 +399,10 @@ class CLI
         @character.update(location: "Out of Cell")
         system('clear')
         sleep(1)
-        puts @@pastel.green.bold("\nAfter opening the door, you find yourself in another corriodor. Similar to the previous one, this corridor has one door at the very end.".center(180)) 
+        puts @@pastel.green.bold("\nAfter opening the door, you find yourself in another corridor. Similar to the previous one, this corridor has one door at the very end.".center(180))
         puts @@pastel.green.bold("As you walk closer to the door, you see that the hallway makes a turn to the left. You can barely see what is at".center(180))
         puts @@pastel.green.bold("the end of the narrow hallway but you do hear the sound of swords clashing. The door in front of you is dark red and rusted.".center(180))
-        puts @@pastel.green.bold("You can vaguely hear people whispering on the otherside.\n\n".center(180))
+        puts @@pastel.green.bold("You can vaguely hear people whispering on the other side.\n\n".center(180))
         
         choice = @@prompt.select("What would you like to do?") do |menu|
             menu.choice "Continue down the hallway".center(145), 1
@@ -454,7 +454,7 @@ class CLI
         battle.combat(@character, enemy)
 
         system('clear')
-        puts @@pastel.green.bold("\nThe goblin falls over. He lies on the floor, barely concious, fully aware that he will die soon.".center(180))
+        puts @@pastel.green.bold("\nThe goblin falls over. He lies on the floor, barely conscious, fully aware that he will die soon.".center(180))
         puts @@pastel.green.bold("You try to ask him where you are. He coughs up a laugh. 'Listen human, you are miles away from the surface' he says.".center(180))
         puts @@pastel.green.bold("'To get there, you would have to climb 10 floors and open the....gates' His voice trails off. And just like that he is dead.".center(180))
         puts @@pastel.green.bold("\n You wonder what the gates are. And what does he mean by surface? Is that home? Well, there is one way to find out.".center(180))
@@ -514,7 +514,7 @@ class CLI
         puts @@pastel.green.bold("Then a dragon breaks and climbs out of the ground! At first the giant four-winged gray dragon does not notice you.")
         puts @@pastel.green.bold("His skin appears to be covered in dark colored crystals. As he moves, his large tail swings from side to side.")
         puts @@pastel.green.bold("\nHe then sees you and starts to move his way over to you. His large figure causes the floor to crack at every step.")
-        puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tought fight!")
+        puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tough fight!")
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         
         midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
