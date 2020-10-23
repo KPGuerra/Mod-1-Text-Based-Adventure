@@ -3,6 +3,7 @@ class CLI
     @@prompt = TTY::Prompt.new
     @@pastel = Pastel.new
     @@font = TTY::Font.new(:doom)
+    @@spinner = TTY::Spinner.new("[:spinner] Processing ...", format: :bouncing_ball)
 
     #MAIN MENU =====================================================================================
     def self.title
@@ -71,7 +72,7 @@ class CLI
     def self.user_menu
         system("clear")
         # puts "Welcome #{user_name}"
-        choice = @@prompt.select("Welcome #{@current_user.user_name}\n\n".center(145)) do |menu| 
+        choice = @@prompt.select(@@pastel.yellow("Welcome #{@current_user.user_name}\n\n".center(150))) do |menu| 
             menu.choice "Start".center(145), 1
             menu.choice "Select A Save".center(145), 2
             menu.choice "How-to-play".center(145), 3
@@ -126,12 +127,14 @@ class CLI
                 menu.choice "No".center(145), 2
             end
 
-            if are_you_sure == "Yes"
+            if are_you_sure == 1
                 @current_user.destroy
-                sleep(1.5)
-                puts "Your account has been successfully destroyed"
+                @@spinner.auto_spin
+                sleep(2)
+                # puts "Your account has been successfully deleted"
+                @@spinner.stop("Your account has been successfully deleted")
                 self.main_menu
-            elsif are_you_sure == "No"
+            elsif are_you_sure == 2
                 self.account_update
             end
         when 4
