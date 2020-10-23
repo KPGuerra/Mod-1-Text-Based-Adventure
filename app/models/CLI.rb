@@ -321,6 +321,9 @@ class CLI
             @character.where_am_i
         when 2
             Character.find_by(name: user_choice, user_id: @current_user).destroy
+            @@spinner.auto_spin
+            sleep(1)
+            @@spinner.stop("Done!")
             self.user_menu
         when 3
             self.user_menu
@@ -408,15 +411,15 @@ class CLI
         when 1
             self.story_continue_hallway
         when 2
-            puts "Being the heroic an brave person you are, you open the door to find it....empty?"
-            puts "The whispers that you heard are gone. The room is filled with paintings of blurred faces."
-            puts "On the ground you see something shiny"
+            puts @@pastel.green.bold("Being the heroic an brave person you are, you open the door to find it....empty?")
+            puts @@pastel.green.bold("The whispers that you heard are gone. The room is filled with paintings of blurred faces.")
+            puts @@pastel.green.bold("On the ground you see something shiny")
 
             encounter_creepy_room = @character.encounter_item_random
-            item = Item.all.sample
+            item = Item.all[0]
             @character.add_item_to_inventory(item, encounter_creepy_room)
             sleep(1)
-            puts "Seeing nothing else in the room, you head back to the hallway."
+            puts @@pastel.green.bold("Seeing nothing else in the room, you head back to the hallway.")
             @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
             self.story_continue_hallway
 
@@ -427,16 +430,17 @@ class CLI
     end
 
     def self.story_continue_hallway
+        goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
         @character.update(location: "Hallway")
         system('clear')
         sleep(1)
     
-        puts "You continue down the hallway. You hold out your lantern. This section of the hallway seems darker.".center(180)
-        puts "As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched.".center(180)
-        puts "\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing".center(180)
-        puts "Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out.".center(180)
-        puts "\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud.".center(180)
-        puts "\nBefore you can respond, he attacks you!".center(180)
+        puts @@pastel.green.bold("You continue down the hallway. You hold out your lantern. This section of the hallway seems darker.".center(180))
+        puts @@pastel.green.bold("As you walk, you pass by portraits of a shadowy figure. You feel as though you are being watched.".center(180))
+        puts @@pastel.green.bold("\nYou hear footsteps coming from behind you. They get louder and louder. You turn around to see...nothing".center(180))
+        puts @@pastel.green.bold("Maybe its just your imagination. You walk faster towards the end of the hallway. Before you can turn the corner, a goblin pops out.".center(180))
+        puts @@pastel.green.bold("\nThe goblin looks at you with a grin. 'How did you get out of you cell?', he thinks out loud.".center(180))
+        puts @@pastel.green.bold("\nBefore you can respond, he attacks you!".center(180))
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
         #battle start
@@ -446,10 +450,10 @@ class CLI
         battle.combat(@character, enemy)
 
         system('clear')
-        puts "\nThe goblin falls over. He lies on the floor, barely concious, fully aware that he will die soon.".center(180)
-        puts "You try to ask him where you are. He coughs up a laugh. 'Listen human, you are miles away from the surface' he says.".center(180)
-        puts "'To get there, you would have to climb 10 floors and open the....gates' His voice trails off. And just like that he is dead.".center(180)
-        puts "\n You wonder what the gates are. And what does he mean by surface? Is that home? Well, there is one way to find out.".center(180)
+        puts @@pastel.green.bold("\nThe goblin falls over. He lies on the floor, barely concious, fully aware that he will die soon.".center(180))
+        puts @@pastel.green.bold("You try to ask him where you are. He coughs up a laugh. 'Listen human, you are miles away from the surface' he says.".center(180))
+        puts @@pastel.green.bold("'To get there, you would have to climb 10 floors and open the....gates' His voice trails off. And just like that he is dead.".center(180))
+        puts @@pastel.green.bold("\n You wonder what the gates are. And what does he mean by surface? Is that home? Well, there is one way to find out.".center(180))
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         
         self.story_key_pad_door
@@ -461,31 +465,31 @@ class CLI
         system('clear')
         sleep(1)
     
-        puts "\nStepping over the goblin's dead body, you finally turn the corner."
-        puts "You are met with a heavy metal door with a keypad. There is writing above that says:"
-        puts "\n\n 'I am a three digit number."
-        puts "The second number is five more than the third."
-        puts "The first number is eight less than the third."
-        puts "Solving me is the key.'"
+        puts @@pastel.green.bold("\nStepping over the goblin's dead body, you finally turn the corner.")
+        puts @@pastel.green.bold("You are met with a heavy metal door with a keypad. There is writing above that says:")
+        puts @@pastel.green.bold("\n\n 'I am a three digit number.")
+        puts @@pastel.green.bold("The second number is five more than the third.")
+        puts @@pastel.green.bold("The first number is eight less than the third.")
+        puts @@pastel.green.bold("Solving me is the key.'")
         puts "\n\n"
-        puts "The keypad on the door has numbers 1-9 on it.\n"
-        first_number = @@prompt.ask('Please Enter the first number:')
-        second_number = @@prompt.ask('Please Enter the second number:')
-        third_number = @@prompt.ask('Please Enter the third number:')
+        puts @@pastel.green.bold("The keypad on the door has numbers 1-9 on it.\n")
+        first_number = @@prompt.ask(@@pastel.blue.bold('Please Enter the first number:'))
+        second_number = @@prompt.ask(@@pastel.green.bold('Please Enter the second number:'))
+        third_number = @@prompt.ask(@@pastel.blue.bold('Please Enter the third number:'))
     
         code = first_number + second_number + third_number
         if code == "194"
             sleep(1)
             system('clear')
-            puts "\nYou have successfully open the door!"
-            puts "\n\nThe door open to a dimly lit room that appears to be a great hall."
-            puts "You step inside hoping for the best\n\n"
+            puts @@pastel.green.bold("\nYou have successfully open the door!")
+            puts @@pastel.green.bold("\n\nThe door open to a dimly lit room that appears to be a great hall.")
+            puts @@pastel.green.bold("You step inside hoping for the best\n\n")
     
             @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
             self.story_boss_room
         else
             system('clear')
-            puts "The keypad flashes red. You hear a loud buzz noise. The code must be wrong..."
+            puts @@pastel.red.bold("The keypad flashes red. You hear a loud buzz noise. The code must be wrong...")
             sleep(1)
             @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
             self.story_key_pad_door
@@ -496,16 +500,18 @@ class CLI
         @character.update(location: "Boss")
         system('clear')
         sleep(1)
+        
+        midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
     
-        puts "\nAs you walk deeper into the room, torches planted on the walls start to light up one by one."
-        puts "The room turned out to be a great chamber with several pillars standing tall."
-        puts "Your footsteps echo in the room. At the end of the hall is a ladder ascending to the next floor"
-        puts "You realize that ladder is your way up and closer to the 'surface'"
-        puts "\nSuddenly the ground shakes causing dust to fall from the ceiling."
-        puts "Then a dragon breaks and climbs out of the ground! At first the giant four-winged gray dragon does not notice you."
-        puts "His skin appears to be covered in dark colored crystals. As he moves, his large tail swings from side to side."
-        puts "\nHe then sees you and starts to move his way over to you. His large figure causes the floor to crack at every step."
-        puts "Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tought fight!"
+        puts @@pastel.green.bold("\nAs you walk deeper into the room, torches planted on the walls start to light up one by one.")
+        puts @@pastel.green.bold("The room turned out to be a great chamber with several pillars standing tall.")
+        puts @@pastel.green.bold("Your footsteps echo in the room. At the end of the hall is a ladder ascending to the next floor")
+        puts @@pastel.green.bold("You realize that ladder is your way up and closer to the 'surface'")
+        puts @@pastel.green.bold("\nSuddenly the ground shakes causing dust to fall from the ceiling.")
+        puts @@pastel.green.bold("Then a dragon breaks and climbs out of the ground! At first the giant four-winged gray dragon does not notice you.")
+        puts @@pastel.green.bold("His skin appears to be covered in dark colored crystals. As he moves, his large tail swings from side to side.")
+        puts @@pastel.green.bold("\nHe then sees you and starts to move his way over to you. His large figure causes the floor to crack at every step.")
+        puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tought fight!")
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
         boss_battle = @character.encounter_enemy
@@ -514,22 +520,22 @@ class CLI
         boss_battle.combat(@character, enemy)
     
         system('clear')
-        puts "\nAfter an exhausting fight, the dragon is defeated. The dragon slumps over making a huge thud noise."
-        puts "You walk around his body, wasting no time to get to the ladder. Before you begin to climb, you look back at the dragon."
-        puts "You wonder if the rest of your journey will be this hard."
+        puts @@pastel.green.bold("\nAfter an exhausting fight, the dragon is defeated. The dragon slumps over making a huge thud noise.")
+        puts @@pastel.green.bold("You walk around his body, wasting no time to get to the ladder. Before you begin to climb, you look back at the dragon.")
+        puts @@pastel.green.bold("You wonder if the rest of your journey will be this hard.")
         sleep(1)
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
         self.end_of_demo
     end 
 
     def self.end_of_demo
-        puts "FLOOR 1 CLEARED".center(145)
+        puts @@pastel.yellow.bold("FLOOR 1 CLEARED".center(145))
         puts"\n\n"
         sleep(1)
-        puts "END OF DEMO".center(145)
+        puts @@pastel.red.bold("END OF DEMO".center(145))
         puts"\n\n"
         sleep(1)
-        puts "THANKS FOR PLAYING!".center(145)
+        puts @@pastel.magenta.bold("THANKS FOR PLAYING!".center(145))
         sleep(2)
     end
 end 
