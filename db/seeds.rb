@@ -11,13 +11,13 @@ ben = User.create(user_name: "ben", password: "benny")
 
 #Enemies====================================================================================================================
 #Enemies --- Level 1
-goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
+# goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
 varos = Enemy.create(name: 'Varos', role: 'Guard', description: 'Trash', hp: 50, level: 1, attack_power: 3, encounter_id: 1, boss:false)
 # ghost = Enemy.create(name: "Ghost", role: "Mage", description: "A spooky ghost with magical powers", hp: 100, level: 1),
 # yeti = Enemy.create(name: "Yeti", role: "Warrior", description: "A beefy yeti", hp: 100, level: 1),
 
 #Boss --- Level 1
-midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
+#midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
 
 #Characters===================================================================================================================
 #Characters --- Level 1
@@ -33,6 +33,7 @@ midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A fo
 #Items====================================================================================================================
 #STORY ITEMS
 # lantern = Item.create(name: "Lantern", item_type: "Story Item", description: "A rusty Lantern that has plenty of oil.")
+
 healing_potion = Item.create(name: "Healing Potion", item_type: "Healing Potion", description: "Healing liquid in a bottle")
 attk_potion = Item.create(name: "Attack Potion", item_type: "Attack Potion", description: "A blue cooling liquid that makes you feel stronger")
 # broadsword = Item.create(name: "Broadsword", item_type: "Weapon", description: "+5 Strength", character_id: azula.id)

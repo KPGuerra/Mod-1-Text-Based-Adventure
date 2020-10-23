@@ -32,6 +32,8 @@ class CLI
     end
 
     def self.log_in
+        system('clear')
+        self.title
         user_name = @@prompt.ask("Username:")
         password = @@prompt.mask("Password:")
         if User.find_by(user_name: user_name, password: password)
@@ -40,6 +42,7 @@ class CLI
             self.user_menu
         else
             system("clear")
+            self.title
             choice = @@prompt.select("Username/Password is incorrect") do |menu|
                 menu.choice "Retry".center(145), 1
                 menu.choice "Create A New Account".center(145), 2
@@ -266,7 +269,7 @@ class CLI
                 end
             end
         when 4
-            luminol = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, attack_power: 13, current_weapon: 'Basic Staff', base_hp: 90)
+            luminol = Character.create(name: "Luminol", role: "Mage", description: "", hp: 90, level: 1, experience_points: 0, attack_power: 14, current_weapon: 'Basic Staff', base_hp: 90)
             sleep(1)
             puts "----------------".center(145)
             puts "Name:    Luminol".center(145)
@@ -444,6 +447,7 @@ class CLI
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
         #battle start
+        goblin = Enemy.create(name: "Goblin", role: "Jailor", description: "A goblin with a sword", hp: [75,80,100].sample, level: 1, attack_power: [5,6,8].sample, encounter_id: nil, boss: false)
         battle = @character.encounter_enemy
         enemy = Enemy.find_by(name: "Goblin")
         enemy.update(encounter_id: battle.id)
@@ -501,8 +505,7 @@ class CLI
         system('clear')
         sleep(1)
         
-        midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
-    
+        
         puts @@pastel.green.bold("\nAs you walk deeper into the room, torches planted on the walls start to light up one by one.")
         puts @@pastel.green.bold("The room turned out to be a great chamber with several pillars standing tall.")
         puts @@pastel.green.bold("Your footsteps echo in the room. At the end of the hall is a ladder ascending to the next floor")
@@ -513,7 +516,8 @@ class CLI
         puts @@pastel.green.bold("\nHe then sees you and starts to move his way over to you. His large figure causes the floor to crack at every step.")
         puts @@pastel.green.bold("Once he is in front of you, he roars. It seems that he wants to kill you! Prepare for a tought fight!")
         @@prompt.keypress("Press space or enter to continue", keys: [:space, :return])
-
+        
+        midir = Enemy.create(name: "Darkeater Midir", role: "Dragon", description: "A four winged crystalized dragon", hp: 160, level: 1, attack_power: [8,10,12].sample, boss: true)
         boss_battle = @character.encounter_enemy
         enemy = Enemy.find_by(name: "Darkeater Midir")
         enemy.update(encounter_id: boss_battle.id)
@@ -529,6 +533,7 @@ class CLI
     end 
 
     def self.end_of_demo
+        system('clear')
         puts @@pastel.yellow.bold("FLOOR 1 CLEARED".center(145))
         puts"\n\n"
         sleep(1)
